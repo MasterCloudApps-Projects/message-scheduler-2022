@@ -24,3 +24,25 @@ jobs:
       run: java -version
     - name: Run unitary test
       run: mvn -B -Dtest=*UnitaryTest test
+  publish_in_github_packages:
+    name:  Publish github artifact
+    runs-on: ubuntu-20.04
+    needs: [test-all]
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+      - name: Publish package
+        run: mvn --batch-mode deploy -Dmaven.test.skip=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PACKAGE_PASSWORD }}
+      - name: Upload jar for next job
+        uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: target
+          retention-days: 1
