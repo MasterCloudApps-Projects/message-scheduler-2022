@@ -24,6 +24,7 @@ jobs:
       run: java -version
     - name: Run unitary test
       run: mvn -B -Dtest=*UnitaryTest test
+  
   publish_in_github_packages:
     name:  Publish github artifact
     runs-on: ubuntu-20.04
@@ -46,3 +47,38 @@ jobs:
           name: target
           path: target
           retention-days: 1
+  
+  publish_in_dockerhub:
+    name: Publish in DockerHub
+    runs-on: ubuntu-20.04
+    needs: [publish_in_github_packages]
+    env:
+      IMAGE_NAME: scheduly
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+      - name: Download jar from previous job
+        uses: actions/download-artifact@v3
+        with:
+          name: target
+          path: target
+      - name: Generate tag
+        run: echo ::set-output name=tag::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
+        id: project
+      - name: Build image
+        run: docker build -t $IMAGE_NAME .
+      - name: Login to DockerHub
+        run: docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}" 
+      - name: Push image to DockerHub
+        run: |
+          docker tag $IMAGE_NAME ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:${{ steps.project.outputs.tag }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:${{ steps.project.outputs.tag }}
+      - name: Login to GitHub Docker Registry
+        run: echo "${{ secrets.PACKAGE_PASSWORD }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Push image to GitHub Container Registry
+        run: |
+          IMAGE_VERSION=${{ steps.project.outputs.tag }}
+          IMAGE_USER=$(echo ${{ github.repository_owner }} | awk '{print tolower($0)}')
+          docker tag $IMAGE_NAME ghcr.io/$IMAGE_USER/$IMAGE_NAME:$IMAGE_VERSION
+          docker push ghcr.io/$IMAGE_USER/$IMAGE_NAME:$IMAGE_VERSION
+  
