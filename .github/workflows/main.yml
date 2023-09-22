@@ -51,6 +51,8 @@ jobs:
   publish_in_dockerhub:
     name: Publish in DockerHub
     runs-on: ubuntu-20.04
+    outputs:
+      tag: ${{ steps.project.outputs.tag }}
     needs: [publish_in_github_packages]
     env:
       IMAGE_NAME: scheduly 
@@ -62,9 +64,13 @@ jobs:
         with:
           name: target
           path: target
-      - name: Generate tag
-        run: echo ::set-output name=tag::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
-        id: project
+      - name: Read Git Commit ID
+        run: |
+          echo ls
+          GIT_COMMIT_ID=$(cat target/classes/git.properties | grep "git.commit.id.abbrev" | cut -d'=' -f2)
+          echo "Git Commit ID Abbreviated: $GIT_COMMIT_ID"
+          echo "::set-output name=tag::$GIT_COMMIT_ID"
+        id: project      
       - name: Build image
         run: docker build -t $IMAGE_NAME .
       - name: Login to DockerHub
@@ -89,6 +95,10 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
+      - name: Update schedule.yml
+        run: |
+          echo "Scheduly image version: ${{ needs.publish_in_dockerhub.outputs.tag }}"
+          sed -i 's|image: molynx/scheduly:3.0.0-SNAPSHOT|image: molynx/scheduly:${{ needs.publish_in_dockerhub.outputs.tag }}|' k8s/scheduly.yml
       - uses: okteto/context@latest
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
