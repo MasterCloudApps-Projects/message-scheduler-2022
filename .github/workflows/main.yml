@@ -53,8 +53,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [publish_in_github_packages]
     env:
-      IMAGE_NAME: scheduly
-      GITHUB_NAME: message-scheduler-2022 
+      IMAGE_NAME: scheduly 
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
@@ -79,7 +78,7 @@ jobs:
       - name: Push image to GitHub Container Registry
         run: |
           IMAGE_VERSION=${{ steps.project.outputs.tag }}
-          IMAGE_USER=$(echo ${{ github.repository_owner }} | awk '{print tolower($0)}')
-          docker tag $IMAGE_NAME ghcr.io/$IMAGE_USER/$GITHUB_NAME:$IMAGE_VERSION
-          docker push ghcr.io/$IMAGE_USER/$GITHUB_NAME:$IMAGE_VERSION
+          IMAGE_USER=molynx
+          docker tag $IMAGE_NAME ghcr.io/$IMAGE_USER/$IMAGE_NAME:$IMAGE_VERSION
+          docker push ghcr.io/$IMAGE_USER/$IMAGE_NAME:$IMAGE_VERSION
   
