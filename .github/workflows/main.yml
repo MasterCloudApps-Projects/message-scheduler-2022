@@ -82,3 +82,24 @@ jobs:
           docker tag $IMAGE_NAME ghcr.io/$IMAGE_USER/$IMAGE_NAME:$IMAGE_VERSION
           docker push ghcr.io/$IMAGE_USER/$IMAGE_NAME:$IMAGE_VERSION
   
+  deploy_in_okteto:
+    name: Deploy in Okteto
+    runs-on: ubuntu-20.04
+    needs: [publish_in_dockerhub]
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+      - uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+      
+      - name: "Activate Namespace"
+        uses: okteto/namespace@latest
+        with:
+          namespace: molynx
+      
+      - name: "Deploy application"
+        uses: okteto/apply@latest
+        with:
+          namespace: molynx
+          manifest: ./k8s/scheduly.yml
