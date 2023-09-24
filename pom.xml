@@ -40,6 +40,14 @@
 			<artifactId>git-commit-id-maven-plugin</artifactId>
 			<version>6.0.0</version>
 		</dependency>
+		<!-- Slack -->
+		 <dependency>
+	     	<groupId>com.slack.api</groupId>
+	      	<artifactId>slack-api-client</artifactId>
+	      	<version>1.31.0</version>
+	     </dependency>
+	    
+	     
 	</dependencies>
 
 	<build>
