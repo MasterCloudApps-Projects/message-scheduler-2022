@@ -16,7 +16,10 @@ public class MessageEntity {
 
 	public MessageEntity() {
 	}
-
+	public MessageEntity(Long id, String messageBody) {
+		this.id = id;
+		this.messageBody = messageBody;
+	}
 	public MessageEntity(String messageBody) {
 		this.messageBody = messageBody;
 	}
@@ -33,7 +36,7 @@ public class MessageEntity {
 		this.messageBody = messageBody;
 	}
 
-	public Object getMessageBody() {
+	public String getMessageBody() {
 		return messageBody;
 	}
 	
