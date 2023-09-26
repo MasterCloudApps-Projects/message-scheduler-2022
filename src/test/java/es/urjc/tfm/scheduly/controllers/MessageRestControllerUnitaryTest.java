@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import es.urjc.tfm.scheduly.domain.Message;
+import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
+import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
 import es.urjc.tfm.scheduly.services.MessageService;
 import es.urjc.tfm.scheduly.services.impl.MessageServiceImpl;
 
@@ -36,28 +37,28 @@ public class MessageRestControllerUnitaryTest {
     @DisplayName("return a message if it exists")
     public void getMessageTest() throws Exception {
         Long messageId = 1L;
-        Message expectedMessage = new Message(messageId, "Random message body");
+        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body");
 
-        when(messageService.getMessage(messageId)).thenReturn(expectedMessage);
+        when(messageService.getMessage(messageId)).thenReturn(messageResponseDto);
 
         mockMvc.perform(get("/api/message/" + messageId))
                .andExpect(status().isOk())
-               .andExpect(jsonPath("$.messageBody").value(expectedMessage.getMessageBody()));
+               .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
     }
 
     @Test
     @DisplayName("create a message and verify its existence")
     public void createMessageTest() throws Exception {
-        String requestMessage = "{\"messageBody\": \"Random message body\"}";
-        Message responseMessage = new Message(1L, "Random message body");
+        String messageRequestDtoContent = "{\"messageBody\": \"Random message body\"}";
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body");
 
-        when(messageService.createMessage(any(Message.class))).thenReturn(responseMessage);
+        when(messageService.createMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
 
         mockMvc.perform(post("/api/message/")
                .contentType(MediaType.APPLICATION_JSON)
-               .content(requestMessage))
+               .content(messageRequestDtoContent))
                .andExpect(status().isCreated())
-               .andExpect(jsonPath("$.messageBody").value(responseMessage.getMessageBody()));
+               .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
     }
     
 }

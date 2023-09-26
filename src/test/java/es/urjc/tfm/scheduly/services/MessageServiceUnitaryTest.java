@@ -3,7 +3,8 @@ package es.urjc.tfm.scheduly.services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.urjc.tfm.scheduly.domain.Message;
+import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
+import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
 import es.urjc.tfm.scheduly.infrastructure.MessageRepository;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 import es.urjc.tfm.scheduly.services.impl.MessageServiceImpl;
@@ -34,15 +35,15 @@ public class MessageServiceUnitaryTest {
     @Test
     public void testCreateMessage() {
  
-        Message requestMessage = new Message("Random message body");
+    	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body");
         MessageEntity savedMessageEntity = new MessageEntity(1L, "Random message body");
         
         when(messageRepository.save(any(MessageEntity.class))).thenReturn(savedMessageEntity);
 
-        Message createdMessage = messageService.createMessage(requestMessage);
+        MessageResponseDto messageResponseDto = messageService.createMessage(messageRequestDto);
 
-        assertEquals(savedMessageEntity.getId(), createdMessage.getId());
-        assertEquals(savedMessageEntity.getMessageBody(), createdMessage.getMessageBody());
+        assertEquals(savedMessageEntity.getId(), messageResponseDto.getId());
+        assertEquals(savedMessageEntity.getMessageBody(), messageResponseDto.getMessageBody());
         verify(messageRepository, times(1)).save(any(MessageEntity.class));
     }
 
@@ -53,10 +54,10 @@ public class MessageServiceUnitaryTest {
         
         when(messageRepository.findById(messageId)).thenReturn(Optional.of(messageEntity));
 
-        Message foundMessage = messageService.getMessage(messageId);
+        MessageResponseDto messageResponseDto = messageService.getMessage(messageId);
 
-        assertEquals(messageEntity.getId(), foundMessage.getId());
-        assertEquals(messageEntity.getMessageBody(), foundMessage.getMessageBody());
+        assertEquals(messageEntity.getId(), messageResponseDto.getId());
+        assertEquals(messageEntity.getMessageBody(), messageResponseDto.getMessageBody());
         verify(messageRepository, times(1)).findById(messageId);
     }
 }

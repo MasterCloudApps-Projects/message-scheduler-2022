@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.urjc.tfm.scheduly.domain.Message;
+import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
+import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
 import es.urjc.tfm.scheduly.services.MessageService;
 
 @RestController
@@ -23,14 +24,19 @@ public class MessageRestController {
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<Message> getMessage(@PathVariable Long id) {
-        Message message = messageService.getMessage(id);
-        return ResponseEntity.ok(message);
+    public ResponseEntity<?> getMessage(@PathVariable Long id) {
+        MessageResponseDto messageResponseDto;
+		try {
+			messageResponseDto = this.messageService.getMessage(id);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(messageResponseDto);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Message> createMessage(@RequestBody Message message) {
-        Message createdMessage = messageService.createMessage(message);
+    public ResponseEntity<MessageResponseDto> createMessage(@RequestBody MessageRequestDto message) {
+    	MessageResponseDto createdMessage = messageService.createMessage(message);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMessage);
     }
 }

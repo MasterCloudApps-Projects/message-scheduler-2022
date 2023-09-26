@@ -3,7 +3,8 @@ package es.urjc.tfm.scheduly.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.urjc.tfm.scheduly.domain.Message;
+import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
+import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
 import es.urjc.tfm.scheduly.infrastructure.MessageRepository;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 import es.urjc.tfm.scheduly.services.MessageService;
@@ -18,15 +19,15 @@ public class MessageServiceImpl implements MessageService{
 		this.messageRepository = messageRepository;
 	}
 	
-	public Message createMessage(Message message) {
+	public MessageResponseDto createMessage(MessageRequestDto message) {
 		MessageEntity messageEntity = new MessageEntity( message.getMessageBody());
 		messageEntity = messageRepository.save(messageEntity);
-		return new Message(messageEntity.getId(),messageEntity.getMessageBody());
+		return new MessageResponseDto(messageEntity.getId(),messageEntity.getMessageBody());
 	}
 
-	public Message getMessage(Long id) {
+	public MessageResponseDto getMessage(Long id) {
 		MessageEntity messageEntity = messageRepository.findById(id).orElseThrow();
-		return new Message(messageEntity.getId(),messageEntity.getMessageBody());
+		return new MessageResponseDto(messageEntity.getId(),messageEntity.getMessageBody());
 	}
 
 }

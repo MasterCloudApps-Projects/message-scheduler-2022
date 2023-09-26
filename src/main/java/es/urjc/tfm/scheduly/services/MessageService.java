@@ -1,10 +1,11 @@
 package es.urjc.tfm.scheduly.services;
 
-import es.urjc.tfm.scheduly.domain.Message;
+import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
+import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
 
 public interface MessageService {
 
-	public Message createMessage(Message message);
+	public MessageResponseDto createMessage(MessageRequestDto message);
 
-	public Message getMessage(Long id);
+	public MessageResponseDto getMessage(Long id);
 }
