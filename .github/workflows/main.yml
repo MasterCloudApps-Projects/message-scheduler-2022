@@ -29,7 +29,8 @@ jobs:
       run: java -version
     - name: Run unitary test
       run: mvn -B -Dtest=*UnitaryTest test
-  
+    - name: Run integration test
+      run: mvn -B -Dtest=*IntegrationTest test
   publish_in_github_packages:
     name:  Publish github artifact
     runs-on: ubuntu-20.04
