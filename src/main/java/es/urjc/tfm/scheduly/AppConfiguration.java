@@ -14,4 +14,5 @@ public class AppConfiguration {
     public MessageUseCase messageUseCase(MessageRepository messageRepository) {
     	return new MessageUseCaseImpl(messageRepository);
     }
+	
 }
