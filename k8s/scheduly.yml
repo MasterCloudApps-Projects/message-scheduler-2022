@@ -19,7 +19,29 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          
+          env:
+            - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: password
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/mysql?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_DATABASE
+              value: mysql
+            - name: APPLICATION_PORT
+              value: "8080"
+            - name: DB_HOST
+              value: mysql
+            - name: DB_NAME
+              value: mysql
+            - name: DB_PASSWORD
+              value: password
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              value: root
 ---
 apiVersion: v1
 kind: Service
