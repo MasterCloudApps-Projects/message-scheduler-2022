@@ -126,3 +126,26 @@ jobs:
         with:
           namespace: molynx
           manifest: ./k8s/scheduly.yml
+  test-e2e:
+    name: Run test e2e
+    runs-on: ubuntu-20.04
+    env:
+      SLACK_TOKEN_TEST: ${{ secrets.SLACK_TOKEN_TEST }}
+    needs: [deploy_in_okteto]
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+    - name: Replace Slack OAuth Token
+      run: |
+          sed -i "s/slack.oauth.token=.*/slack.oauth.token=${{ secrets.SLACK_TOKEN }}/" src/main/resources/application.properties
+    - name: Run mvn v
+      run: mvn -v 
+    - name: Run java v
+      run: java -version
+    - name: Run E2E test
+      run: mvn -B -Dtest=*E2ETest test
