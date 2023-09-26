@@ -6,5 +6,5 @@ public interface MessageService {
 
 	public Message createMessage(Message message);
 
-	public Message findById(Long id);
+	public Message getMessage(Long id);
 }

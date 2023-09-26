@@ -47,17 +47,16 @@ public class MessageServiceUnitaryTest {
     }
 
     @Test
-    public void testFindById() {
+    public void testGetMessage() {
         Long messageId = 1L;
         MessageEntity messageEntity = new MessageEntity(messageId, "Random message body");
         
         when(messageRepository.findById(messageId)).thenReturn(Optional.of(messageEntity));
 
-        Message foundMessage = messageService.findById(messageId);
+        Message foundMessage = messageService.getMessage(messageId);
 
         assertEquals(messageEntity.getId(), foundMessage.getId());
         assertEquals(messageEntity.getMessageBody(), foundMessage.getMessageBody());
         verify(messageRepository, times(1)).findById(messageId);
     }
 }
-

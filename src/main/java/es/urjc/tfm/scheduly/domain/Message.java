@@ -5,6 +5,7 @@ public class Message {
 	private Long id;
 	private String messageBody;
 	
+	public Message() {}
 	public Message(Long id, String messageBody) {
 		super();
 		this.id = id;

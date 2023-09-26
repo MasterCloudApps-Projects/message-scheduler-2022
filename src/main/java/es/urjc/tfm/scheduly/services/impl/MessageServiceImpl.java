@@ -24,7 +24,7 @@ public class MessageServiceImpl implements MessageService{
 		return new Message(messageEntity.getId(),messageEntity.getMessageBody());
 	}
 
-	public Message findById(Long id) {
+	public Message getMessage(Long id) {
 		MessageEntity messageEntity = messageRepository.findById(id).orElseThrow();
 		return new Message(messageEntity.getId(),messageEntity.getMessageBody());
 	}
