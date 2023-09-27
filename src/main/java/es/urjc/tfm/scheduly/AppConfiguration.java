@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import es.urjc.tfm.scheduly.domain.ports.MessageRepository;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.domain.usecases.MessageUseCaseImpl;
+import es.urjc.tfm.scheduly.infrastructure.MessageJpaRepository;
+import es.urjc.tfm.scheduly.infrastructure.adapters.MessageJpaRepositoryAdapter;
 
 @Configuration
 public class AppConfiguration {
@@ -14,4 +16,10 @@ public class AppConfiguration {
     public MessageUseCase messageUseCase(MessageRepository messageRepository) {
     	return new MessageUseCaseImpl(messageRepository);
     }
+
+	@Bean
+    public MessageRepository messageRepository(MessageJpaRepository messageJpaRepository) {
+    	return new MessageJpaRepositoryAdapter(messageJpaRepository);
+    }
+	
 }
