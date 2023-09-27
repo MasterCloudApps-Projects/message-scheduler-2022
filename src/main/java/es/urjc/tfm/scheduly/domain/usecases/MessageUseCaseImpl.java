@@ -2,8 +2,8 @@ package es.urjc.tfm.scheduly.domain.usecases;
 
 import java.util.Optional;
 
+import es.urjc.tfm.scheduly.domain.ports.MessageRepository;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
-import es.urjc.tfm.scheduly.infrastructure.MessageRepository;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 
 public class MessageUseCaseImpl implements MessageUseCase{

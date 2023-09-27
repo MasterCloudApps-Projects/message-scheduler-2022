@@ -30,7 +30,7 @@ import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 public class MessageRepositoryIntegrationTest { 
 
     @Autowired
-    private MessageRepository messageRepository;
+    private MessageJpaRepository messageRepository;
 
     @LocalServerPort
     private int port;
