@@ -30,4 +30,7 @@ public class MessageServiceImpl implements MessageService{
 		return new MessageResponseDto(fullMessageDto.getId(),fullMessageDto.getMessageBody());
 	}
 
+	public void deleteMessage(Long id) {
+		this.messageUseCase.deleteMessage(id);
+	}
 }

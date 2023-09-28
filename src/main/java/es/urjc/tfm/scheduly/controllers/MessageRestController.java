@@ -2,6 +2,7 @@ package es.urjc.tfm.scheduly.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,5 +39,11 @@ public class MessageRestController {
     public ResponseEntity<MessageResponseDto> createMessage(@RequestBody MessageRequestDto message) {
     	MessageResponseDto createdMessage = messageService.createMessage(message);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMessage);
+    }
+
+	@DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMessage(@PathVariable Long id) {
+    	this.messageService.deleteMessage(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Message deleted properly");
     }
 }

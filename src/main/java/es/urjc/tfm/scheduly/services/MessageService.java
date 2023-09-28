@@ -8,4 +8,6 @@ public interface MessageService {
 	public MessageResponseDto createMessage(MessageRequestDto message);
 
 	public MessageResponseDto getMessage(Long id);
+	
+	public void deleteMessage(Long id);
 }
