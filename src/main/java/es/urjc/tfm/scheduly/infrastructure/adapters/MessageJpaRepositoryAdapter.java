@@ -33,4 +33,9 @@ public class MessageJpaRepositoryAdapter implements MessageRepository{
 		return new FullMessageDto(messageEntity.getId(),messageEntity.getMessageBody());
 	}
 	
+	@Override
+	public void deleteById(Long id) {	
+		this.messageJpaRepository.deleteById(id);
+	}
+	
 }

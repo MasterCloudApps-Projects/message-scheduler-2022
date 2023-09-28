@@ -1,6 +1,7 @@
 package es.urjc.tfm.scheduly.infrastructure;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterAll;
@@ -59,7 +60,7 @@ public class MessageRepositoryIntegrationTest {
     }
 
     @Test
-    public void saveMessageTest() throws JsonMappingException, JsonProcessingException {
+    public void saveAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
 		String responseJson = "{\"messageBody\": \"some random text\"}";
         
@@ -71,10 +72,12 @@ public class MessageRepositoryIntegrationTest {
 
         assertEquals(message.getMessageBody(), retrievedMessage.getMessageBody());
         assertNotNull(retrievedMessage.getId());
+        messageRepository.deleteById(retrievedMessage.getId());
+        
     }
     
     @Test
-    public void saveAndFindByIdMessageTest() throws JsonMappingException, JsonProcessingException {
+    public void saveFindByIdAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
 		String responseJson = "{\"messageBody\": \"some random text\"}";
         
@@ -86,5 +89,11 @@ public class MessageRepositoryIntegrationTest {
         
         MessageEntity retrievedMessage = messageRepository.findById(message.getId()).orElse(null);
         assertEquals(message.getMessageBody(), retrievedMessage.getMessageBody());
+        
+        messageRepository.deleteById(retrievedMessage.getId());
+        MessageEntity retrievedMessagePostDelete = messageRepository.findById(message.getId()).orElse(null);
+        assertNull(retrievedMessagePostDelete);
     }
+    
+    
 }

@@ -7,5 +7,7 @@ public interface MessageRepository {
 	public Optional<FullMessageDto> findById(Long id);
 
 	public FullMessageDto save(FullMessageDto fullMessageDto);
+
+	public void deleteById(Long id);
 	
 }
