@@ -2,9 +2,9 @@ package es.urjc.tfm.scheduly.domain.usecases;
 
 import java.util.Optional;
 
+import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageRepository;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
-import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 
 public class MessageUseCaseImpl implements MessageUseCase{
 
@@ -14,13 +14,13 @@ public class MessageUseCaseImpl implements MessageUseCase{
 		this.messageRepository = messageRepository;
 	}
 
-	public Optional<MessageEntity> findById(Long id){
+	public Optional<FullMessageDto> findById(Long id){
 		return messageRepository.findById(id);
 	}
 
 	@Override
-	public MessageEntity createMessage(MessageEntity messageEntity) {
-		return messageRepository.save(messageEntity);
+	public FullMessageDto createMessage(FullMessageDto fullMessageDto) {
+		return messageRepository.save(fullMessageDto);
 	}
 	
 	

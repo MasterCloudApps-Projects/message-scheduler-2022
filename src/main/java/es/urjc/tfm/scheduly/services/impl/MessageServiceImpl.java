@@ -2,10 +2,11 @@ package es.urjc.tfm.scheduly.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
-import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 import es.urjc.tfm.scheduly.services.MessageService;
 
 @Service
@@ -19,17 +20,14 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	public MessageResponseDto createMessage(MessageRequestDto message) {
-		MessageEntity messageEntity = new MessageEntity( message.getMessageBody());
-		messageEntity = messageUseCase.createMessage(messageEntity);
-
-		return new MessageResponseDto(messageEntity.getId(),messageEntity.getMessageBody());
+		FullMessageDto fullMessageDto = new FullMessageDto(message.getMessageBody());
+		fullMessageDto = messageUseCase.createMessage(fullMessageDto);
+		return new MessageResponseDto(fullMessageDto.getId(),fullMessageDto.getMessageBody());
 	}
 
 	public MessageResponseDto getMessage(Long id) {
-		MessageEntity messageEntity;
-		messageEntity = messageUseCase.findById(id).orElseThrow();
-		
-		return new MessageResponseDto(messageEntity.getId(),messageEntity.getMessageBody());
+		FullMessageDto fullMessageDto = messageUseCase.findById(id).orElseThrow();
+		return new MessageResponseDto(fullMessageDto.getId(),fullMessageDto.getMessageBody());
 	}
 
 }

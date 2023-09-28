@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.infrastructure.adapters.MessageJpaRepositoryAdapter;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 
@@ -32,18 +33,19 @@ public class MessageJpaRepositoryUnitaryTest {
         MessageEntity expectedMessage = new MessageEntity(messageId,"Random message body");
         when(messageJpaRepository.findById(messageId)).thenReturn(Optional.of(expectedMessage));
 
-        Optional<MessageEntity> result = messageJpaRepositoryAdapter.findById(messageId);
+        Optional<FullMessageDto> result = messageJpaRepositoryAdapter.findById(messageId);
 
-        assertEquals(expectedMessage, result.orElse(null));
+        assertEquals(expectedMessage.getMessageBody(), result.get().getMessageBody());
     }
 
     @Test
     public void saveTest() {
-    	MessageEntity messageToSave = new MessageEntity("Random message body");
-        when(messageJpaRepository.save(messageToSave)).thenReturn(messageToSave);
+    	FullMessageDto messageToSaveDto = new FullMessageDto("Random message body");
+    	MessageEntity messageToSave = new MessageEntity(1L,"Random message body");
+        when(messageJpaRepository.save(any(MessageEntity.class))).thenReturn(messageToSave);
 
-        MessageEntity result = messageJpaRepositoryAdapter.save(messageToSave);
-
-        assertEquals(messageToSave, result);
+        FullMessageDto result = messageJpaRepositoryAdapter.save(messageToSaveDto);
+        assertEquals(messageToSave.getId(), result.getId());
+        assertEquals(messageToSave.getMessageBody(), result.getMessageBody());
     }
 }
