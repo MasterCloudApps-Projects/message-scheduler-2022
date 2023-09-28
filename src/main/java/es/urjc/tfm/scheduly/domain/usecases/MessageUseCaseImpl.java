@@ -22,6 +22,11 @@ public class MessageUseCaseImpl implements MessageUseCase{
 	public FullMessageDto createMessage(FullMessageDto fullMessageDto) {
 		return messageRepository.save(fullMessageDto);
 	}
+
+	@Override
+	public void deleteMessage(Long id ) {
+		this.messageRepository.deleteById(id);
+	}
 	
 	
 }
