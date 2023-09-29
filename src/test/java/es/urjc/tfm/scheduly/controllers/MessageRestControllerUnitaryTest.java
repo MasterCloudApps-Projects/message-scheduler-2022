@@ -1,8 +1,10 @@
 package es.urjc.tfm.scheduly.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,6 +61,16 @@ public class MessageRestControllerUnitaryTest {
                .content(messageRequestDtoContent))
                .andExpect(status().isCreated())
                .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
+    }
+    
+    @Test
+    @DisplayName("deletes a message")
+    public void deleteMessageTest() throws Exception {
+        Long messageId = 1L;
+        doNothing().when(messageService).deleteMessage(messageId);
+
+        mockMvc.perform(delete("/api/message/" + messageId))
+               .andExpect(status().isNoContent());
     }
     
 }
