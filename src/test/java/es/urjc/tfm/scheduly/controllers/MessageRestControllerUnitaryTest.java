@@ -42,7 +42,7 @@ public class MessageRestControllerUnitaryTest {
     @DisplayName("return a message if it exists")
     public void getMessageTest() throws Exception {
         Long messageId = 1L;
-        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body");
+        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body", null);
 
         when(messageService.getMessage(messageId)).thenReturn(messageResponseDto);
 
@@ -57,9 +57,9 @@ public class MessageRestControllerUnitaryTest {
         
         List<MessageResponseDto> MessageResponseDtoList = new ArrayList<>();
         Long messageId1 = 1L;
-        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1");
+        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1", null);
         Long messageId2 = 2L;
-        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2");
+        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2", null);
         MessageResponseDtoList.add(messageResponseDto1);
         MessageResponseDtoList.add(messageResponseDto2);
         
@@ -77,7 +77,7 @@ public class MessageRestControllerUnitaryTest {
     @DisplayName("create a message and verify its existence")
     public void createMessageTest() throws Exception {
         String messageRequestDtoContent = "{\"messageBody\": \"Random message body\"}";
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body");
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", null);
 
         when(messageService.createMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
 
