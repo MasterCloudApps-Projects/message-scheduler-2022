@@ -90,9 +90,9 @@ public class MessageServiceUnitaryTest {
     @Test
     public void testScheduleMessage() {
  
-    	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body", 2023, 9, 24, 10, 10);
+    	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body", 2024, 9, 24, 10, 10);
     	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", 
-    			ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid")));
+    			ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid")));
         
         when(messageUseCase.createMessage(any(FullMessageDto.class))).thenReturn(savedMessageDto);
 

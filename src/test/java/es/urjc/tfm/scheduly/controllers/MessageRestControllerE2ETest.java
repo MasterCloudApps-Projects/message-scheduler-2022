@@ -21,7 +21,12 @@ public class MessageRestControllerE2ETest {
 	
 	@Test
 	public void createMessageAndFindByIdTest() {
-        String requestJson = "{\"messageBody\": \"Random message body\"}";
+        String requestJson = "{\"messageBody\": \"Random message body\","
+        		+ "\"year\": 2023,"
+        		+ "\"month\": 9,"
+        		+ "\"day\": 30,"
+        		+ "\"hour\": 20,"
+        		+ "\"minute\": 9}";
 
         Response messageCreated = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -52,7 +57,12 @@ public class MessageRestControllerE2ETest {
 	
 	@Test
 	public void createMessagesAndFindAllTest() {
-        String requestJson1 = "{\"messageBody\": \"Random message body 1\"}";
+		String requestJson1 = "{\"messageBody\": \"Random message body 1\","
+        		+ "\"year\": 2027,"
+        		+ "\"month\": 9,"
+        		+ "\"day\": 30,"
+        		+ "\"hour\": 20,"
+        		+ "\"minute\": 9}";
 
         Response messageCreated1 = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -64,7 +74,12 @@ public class MessageRestControllerE2ETest {
                 .body("messageBody", equalTo("Random message body 1"))
                 .extract().response();
         int messageId1 = messageCreated1.path("id");
-        String requestJson2 = "{\"messageBody\": \"Random message body 2\"}";
+        String requestJson2 = "{\"messageBody\": \"Random message body 2\","
+        		+ "\"year\": 2025,"
+        		+ "\"month\": 9,"
+        		+ "\"day\": 30,"
+        		+ "\"hour\": 20,"
+        		+ "\"minute\": 9}";
         Response messageCreated2 = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(requestJson2)

@@ -6,8 +6,10 @@ import org.togglz.core.context.FeatureContext;
 
 public enum SchedulyFeatures implements Feature {
  
-    /*public boolean isActive() {
+    @Label("Task Scheduler")
+    SCHEDULE_MESSAGE_SCHEDULER;
+    public boolean isActive() {
         return FeatureContext.getFeatureManager().isActive(this);
-    }*/
+    }
     
 }
