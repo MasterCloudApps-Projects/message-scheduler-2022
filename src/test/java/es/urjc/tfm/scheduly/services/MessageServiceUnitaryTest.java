@@ -7,12 +7,15 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
+import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 import es.urjc.tfm.scheduly.services.impl.MessageServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.mockito.InjectMocks;
@@ -59,5 +62,27 @@ public class MessageServiceUnitaryTest {
         assertEquals(fullMessageDto.getId(), messageResponseDto.getId());
         assertEquals(fullMessageDto.getMessageBody(), messageResponseDto.getMessageBody());
         verify(messageUseCase, times(1)).findById(messageId);
+    }
+    
+    @Test
+    public void testGetAllMessage() {
+        List<FullMessageDto> fullMessageDtoList = new ArrayList<>();
+        Long messageId1 = 1L;
+        FullMessageDto fullMessageDto1 = new FullMessageDto(messageId1,"Random message body number 1");
+        Long messageId2 = 2L;
+        FullMessageDto fullMessageDto2 = new FullMessageDto(messageId2,"Random message body number 2");
+        fullMessageDtoList.add(fullMessageDto1);
+        fullMessageDtoList.add(fullMessageDto2);
+        
+        
+        when(messageUseCase.findAll()).thenReturn(fullMessageDtoList);
+
+        List<MessageResponseDto> messageResponseDto = messageService.getAllMessages();
+
+        assertEquals(fullMessageDto1.getId(), messageResponseDto.get(0).getId());
+        assertEquals(fullMessageDto1.getMessageBody(), messageResponseDto.get(0).getMessageBody());
+        assertEquals(fullMessageDto2.getId(), messageResponseDto.get(1).getId());
+        assertEquals(fullMessageDto2.getMessageBody(), messageResponseDto.get(1).getMessageBody());
+        
     }
 }

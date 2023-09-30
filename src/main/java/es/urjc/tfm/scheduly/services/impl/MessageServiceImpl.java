@@ -1,5 +1,8 @@
 package es.urjc.tfm.scheduly.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,12 @@ public class MessageServiceImpl implements MessageService{
 		return mapper.map(
 				messageUseCase.findById(id).orElseThrow(),
 				MessageResponseDto.class);
+	}
+
+	public List<MessageResponseDto> getAllMessages() {
+		return this.messageUseCase.findAll()
+				.stream().map(message -> this.mapper.map(message, MessageResponseDto.class))
+                .collect(Collectors.toList());
 	}
 
 	public void deleteMessage(Long id) {
