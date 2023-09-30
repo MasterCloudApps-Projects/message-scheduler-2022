@@ -2,6 +2,7 @@ package es.urjc.tfm.scheduly.infrastructure.adapters;
 
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,21 +17,26 @@ public class MessageJpaRepositoryAdapter implements MessageRepository{
 	@Autowired
 	private MessageJpaRepository messageJpaRepository;
 	
+	private ModelMapper mapper;
+	
 	public MessageJpaRepositoryAdapter(MessageJpaRepository messageJpaRepository) {
 		this.messageJpaRepository = messageJpaRepository;
+		this.mapper = new ModelMapper();
 	}
 
 	@Override
 	public Optional<FullMessageDto> findById(Long id) {
-		MessageEntity messageEntity = this.messageJpaRepository.findById(id).orElseThrow();
-		return Optional.of(new FullMessageDto(messageEntity.getId(),messageEntity.getMessageBody()));
+		return Optional.of(mapper.map(
+				this.messageJpaRepository.findById(id).orElseThrow(),
+				FullMessageDto.class));
 	}
 
 	@Override
 	public FullMessageDto save(FullMessageDto fullMessageDto) {
-		MessageEntity messageEntity = new MessageEntity(fullMessageDto.getMessageBody());
-		messageEntity = this.messageJpaRepository.save(messageEntity);
-		return new FullMessageDto(messageEntity.getId(),messageEntity.getMessageBody());
+		return mapper.map(
+				this.messageJpaRepository.save(
+						mapper.map(fullMessageDto,MessageEntity.class)),
+				FullMessageDto.class);
 	}
 	
 	@Override

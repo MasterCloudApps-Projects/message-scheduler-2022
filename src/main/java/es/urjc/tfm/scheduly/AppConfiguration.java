@@ -1,5 +1,6 @@
 package es.urjc.tfm.scheduly;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,11 @@ import es.urjc.tfm.scheduly.infrastructure.adapters.MessageJpaRepositoryAdapter;
 @Configuration
 public class AppConfiguration {
 
+	@Bean
+	public ModelMapper modelMapper() {
+	    return new ModelMapper();
+	}
+	
 	@Bean
     public MessageUseCase messageUseCase(MessageRepository messageRepository) {
     	return new MessageUseCaseImpl(messageRepository);
