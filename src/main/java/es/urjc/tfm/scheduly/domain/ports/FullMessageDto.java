@@ -1,5 +1,6 @@
 package es.urjc.tfm.scheduly.domain.ports;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class FullMessageDto {
@@ -7,19 +8,23 @@ public class FullMessageDto {
 	private Long id;
 	private String messageBody;
 	private ZonedDateTime executionTime;
+	private LocalDateTime serverExecutionTime;
+	
 	public FullMessageDto() {
 	}
 	
-	public FullMessageDto(Long id, String messageBody, ZonedDateTime executionTimeDate) {
+	public FullMessageDto(Long id, String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime) {
 		super();
         this.id = id;
 		this.messageBody = messageBody;
 		this.executionTime = executionTimeDate;
+		this.serverExecutionTime = serverExecutionTime;
 	}
 	
 	public FullMessageDto(String messageBody, ZonedDateTime executionTimeDate) {
 		this.messageBody = messageBody;
 		this.executionTime = executionTimeDate;
+		this.serverExecutionTime = serverExecutionTime;
 	}
 
 	public FullMessageDto(String messageBody) {
@@ -46,5 +51,12 @@ public class FullMessageDto {
 	}
 	public void setExecutionTime(ZonedDateTime executionTime) {
 		this.executionTime = executionTime;
+	}
+
+	public LocalDateTime getServerExecutionTime() {
+		return serverExecutionTime;
+	}
+	public void setServerExecutionTime(LocalDateTime serverExecutionTime) {
+		this.serverExecutionTime = serverExecutionTime;
 	}
 }
