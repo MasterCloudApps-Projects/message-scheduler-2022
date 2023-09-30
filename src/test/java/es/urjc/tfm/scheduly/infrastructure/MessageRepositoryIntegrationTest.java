@@ -64,7 +64,7 @@ public class MessageRepositoryIntegrationTest {
     @Test
     public void saveAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"messageBody\": \"some random text\"}";
+		String responseJson = "{\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\"}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -81,7 +81,7 @@ public class MessageRepositoryIntegrationTest {
     @Test
     public void saveFindByIdAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"messageBody\": \"some random text\"}";
+		String responseJson = "{\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\"}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -100,7 +100,7 @@ public class MessageRepositoryIntegrationTest {
     @Test
     public void saveFindAllAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"messageBody\": \"some random text\"}";
+		String responseJson = "{\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\"}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
