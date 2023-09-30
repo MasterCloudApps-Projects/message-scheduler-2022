@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -33,9 +34,15 @@ public class MessageServiceImpl implements MessageService{
 	private ScheduledExecutorService executorService;
 	
 	private ModelMapper mapper;
+
+	public MessageServiceImpl() {
+        executorService = Executors.newScheduledThreadPool(1);
+    }
+	
 	public MessageServiceImpl(MessageUseCase messageUseCase) {
 		this.messageUseCase = messageUseCase;
 		this.mapper = new ModelMapper();
+		executorService = Executors.newScheduledThreadPool(1);
 	}
 
 	public MessageResponseDto createMessage(MessageRequestDto message) {
