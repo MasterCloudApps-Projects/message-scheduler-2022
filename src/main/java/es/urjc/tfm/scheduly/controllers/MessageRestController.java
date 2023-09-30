@@ -1,5 +1,7 @@
 package es.urjc.tfm.scheduly.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +37,11 @@ public class MessageRestController {
 		return ResponseEntity.ok(messageResponseDto);
     }
 
+	@GetMapping("/")
+	public List<MessageResponseDto> getAllMessages() {
+		return this.messageService.getAllMessages();
+	}
+	
     @PostMapping("/")
     public ResponseEntity<MessageResponseDto> createMessage(@RequestBody MessageRequestDto message) {
     	MessageResponseDto createdMessage = messageService.createMessage(message);

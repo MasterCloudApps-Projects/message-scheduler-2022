@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,6 +51,28 @@ public class MessageRestControllerUnitaryTest {
                .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
     }
 
+    @Test
+    @DisplayName("return all messages if exists")
+    public void getAllMessageTest() throws Exception {
+        
+        List<MessageResponseDto> MessageResponseDtoList = new ArrayList<>();
+        Long messageId1 = 1L;
+        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1");
+        Long messageId2 = 2L;
+        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2");
+        MessageResponseDtoList.add(messageResponseDto1);
+        MessageResponseDtoList.add(messageResponseDto2);
+        
+        when(messageService.getAllMessages()).thenReturn(MessageResponseDtoList);
+
+        mockMvc.perform(get("/api/message/"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0].id").value(messageResponseDto1.getId()))
+               .andExpect(jsonPath("$[0].messageBody").value(messageResponseDto1.getMessageBody()))
+               .andExpect(jsonPath("$[1].id").value(messageResponseDto2.getId()))
+               .andExpect(jsonPath("$[1].messageBody").value(messageResponseDto2.getMessageBody()));
+    }
+    
     @Test
     @DisplayName("create a message and verify its existence")
     public void createMessageTest() throws Exception {
