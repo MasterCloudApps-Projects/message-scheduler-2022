@@ -1,5 +1,6 @@
 package es.urjc.tfm.scheduly.infrastructure.models;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import jakarta.persistence.Entity;
@@ -18,12 +19,15 @@ public class MessageEntity {
 
 	private ZonedDateTime executionTime;
 
+	private LocalDateTime serverExecutionTime;
+
 	public MessageEntity() {
 	}
-	public MessageEntity(Long id, String messageBody, ZonedDateTime executionTime) {
+	public MessageEntity(Long id, String messageBody, ZonedDateTime executionTime, LocalDateTime serverExecutionTime) {
 		this.id = id;
 		this.messageBody = messageBody;
 		this.executionTime = executionTime;
+		this.serverExecutionTime = serverExecutionTime;
 	}
 	public MessageEntity(String messageBody) {
 		this.messageBody = messageBody;
@@ -48,5 +52,12 @@ public class MessageEntity {
     }
     public void setExecutionTime(ZonedDateTime executionTime) {
         this.executionTime = executionTime;
+    }
+
+	public LocalDateTime getServerExecutionTime() {
+        return serverExecutionTime;
+    }
+    public void setServerExecutionTime(LocalDateTime serverExecutionTime) {
+        this.serverExecutionTime = serverExecutionTime;
     }
 }
