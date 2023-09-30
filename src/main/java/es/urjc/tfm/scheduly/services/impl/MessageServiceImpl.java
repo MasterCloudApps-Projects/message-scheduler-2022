@@ -47,4 +47,10 @@ public class MessageServiceImpl implements MessageService{
 	public void deleteMessage(Long id) {
 		this.messageUseCase.deleteMessage(id);
 	}
+
+	@Override
+	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) {
+		// created null service 
+		return null;
+	}
 }

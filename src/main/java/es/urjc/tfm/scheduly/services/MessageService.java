@@ -14,4 +14,7 @@ public interface MessageService {
 	public List<MessageResponseDto> getAllMessages();
 
 	public void deleteMessage(Long id);
+
+	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto);
+	 
 }

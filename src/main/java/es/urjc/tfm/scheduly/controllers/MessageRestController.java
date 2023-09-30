@@ -53,4 +53,10 @@ public class MessageRestController {
     	this.messageService.deleteMessage(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Message deleted properly");
     }
+	
+	@PostMapping("/schedule")
+    public ResponseEntity<MessageResponseDto> scheduleMessage(@RequestBody MessageRequestDto message) {
+    	MessageResponseDto scheduledMessage = messageService.scheduleMessage(message);
+        return ResponseEntity.status(HttpStatus.CREATED).body(scheduledMessage);
+    }
 }

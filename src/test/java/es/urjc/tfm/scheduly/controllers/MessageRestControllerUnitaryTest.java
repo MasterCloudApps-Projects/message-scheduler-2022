@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +98,27 @@ public class MessageRestControllerUnitaryTest {
 
         mockMvc.perform(delete("/api/message/" + messageId))
                .andExpect(status().isNoContent());
+    }
+    
+    @Test
+    @DisplayName("schedule a message")
+    public void scheduleMessageTest() throws Exception {
+        String messageRequestDtoContent = "{\"messageBody\":\"Random message body\","
+        		+ "\"year\": 2023,"
+        		+ "\"month\": 9,"
+        		+ "\"day\": 24,"
+        		+ "\"hour\": 17,"
+        		+ "\"minute\": 46}";
+        ZonedDateTime testDate =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", testDate);
+        
+        when(messageService.scheduleMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
+
+        mockMvc.perform(post("/api/message/schedule")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(messageRequestDtoContent))
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
     }
     
 }
