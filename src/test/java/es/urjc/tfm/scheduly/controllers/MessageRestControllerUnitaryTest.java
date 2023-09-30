@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ public class MessageRestControllerUnitaryTest {
     @DisplayName("return a message if it exists")
     public void getMessageTest() throws Exception {
         Long messageId = 1L;
-        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body", null);
+        ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body", executionTime, serverExecutionTime);
 
         when(messageService.getMessage(messageId)).thenReturn(messageResponseDto);
 
@@ -59,9 +62,11 @@ public class MessageRestControllerUnitaryTest {
         
         List<MessageResponseDto> MessageResponseDtoList = new ArrayList<>();
         Long messageId1 = 1L;
-        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1", null);
+        ZonedDateTime executionTime1 =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        LocalDateTime serverExecutionTime1 = executionTime1.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1", executionTime1, serverExecutionTime1);
         Long messageId2 = 2L;
-        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2", null);
+        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2", null, null);
         MessageResponseDtoList.add(messageResponseDto1);
         MessageResponseDtoList.add(messageResponseDto2);
         
@@ -79,7 +84,9 @@ public class MessageRestControllerUnitaryTest {
     @DisplayName("create a message and verify its existence")
     public void createMessageTest() throws Exception {
         String messageRequestDtoContent = "{\"messageBody\": \"Random message body\"}";
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", null);
+        ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime);
 
         when(messageService.createMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
 
@@ -109,8 +116,10 @@ public class MessageRestControllerUnitaryTest {
         		+ "\"day\": 24,"
         		+ "\"hour\": 17,"
         		+ "\"minute\": 46}";
-        ZonedDateTime testDate =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", testDate);
+        ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+		
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime);
         
         when(messageService.scheduleMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
 
