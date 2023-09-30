@@ -1,5 +1,7 @@
 package es.urjc.tfm.scheduly.services.impl;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +52,16 @@ public class MessageServiceImpl implements MessageService{
 
 	@Override
 	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) {
-		// created null service 
-		return null;
+		FullMessageDto fullMessageDto = new FullMessageDto(messageRequestDto.getMessageBody(), ZonedDateTime.of(
+				messageRequestDto.getYear(), 
+				messageRequestDto.getMonth(), 
+				messageRequestDto.getDay(), 
+				messageRequestDto.getHour(), 
+				messageRequestDto.getMinute(),
+				0, 0, ZoneId.of("Europe/Madrid")));
+		
+		return  mapper.map(
+				messageUseCase.createMessage(fullMessageDto),
+				MessageResponseDto.class);
 	}
 }

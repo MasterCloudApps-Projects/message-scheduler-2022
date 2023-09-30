@@ -7,13 +7,14 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
-import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 import es.urjc.tfm.scheduly.services.impl.MessageServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class MessageServiceUnitaryTest {
     public void testCreateMessage() {
  
     	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body");
-    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body");
+    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", null);
         
         when(messageUseCase.createMessage(any(FullMessageDto.class))).thenReturn(savedMessageDto);
 
@@ -53,7 +54,7 @@ public class MessageServiceUnitaryTest {
     @Test
     public void testGetMessage() {
         Long messageId = 1L;
-        FullMessageDto fullMessageDto = new FullMessageDto(messageId, "Random message body");
+        FullMessageDto fullMessageDto = new FullMessageDto(messageId, "Random message body", null);
         
         when(messageUseCase.findById(messageId)).thenReturn(Optional.of(fullMessageDto));
 
@@ -68,9 +69,9 @@ public class MessageServiceUnitaryTest {
     public void testGetAllMessage() {
         List<FullMessageDto> fullMessageDtoList = new ArrayList<>();
         Long messageId1 = 1L;
-        FullMessageDto fullMessageDto1 = new FullMessageDto(messageId1,"Random message body number 1");
+        FullMessageDto fullMessageDto1 = new FullMessageDto(messageId1,"Random message body number 1", null);
         Long messageId2 = 2L;
-        FullMessageDto fullMessageDto2 = new FullMessageDto(messageId2,"Random message body number 2");
+        FullMessageDto fullMessageDto2 = new FullMessageDto(messageId2,"Random message body number 2", null);
         fullMessageDtoList.add(fullMessageDto1);
         fullMessageDtoList.add(fullMessageDto2);
         
@@ -84,5 +85,20 @@ public class MessageServiceUnitaryTest {
         assertEquals(fullMessageDto2.getId(), messageResponseDto.get(1).getId());
         assertEquals(fullMessageDto2.getMessageBody(), messageResponseDto.get(1).getMessageBody());
         
+    }
+    
+    @Test
+    public void testScheduleMessage() {
+ 
+    	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body", 2023, 9, 24, 10, 10);
+    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", 
+    			ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid")));
+        
+        when(messageUseCase.createMessage(any(FullMessageDto.class))).thenReturn(savedMessageDto);
+
+        MessageResponseDto messageResponseDto = messageService.scheduleMessage(messageRequestDto);
+
+        assertEquals(savedMessageDto.getId(), messageResponseDto.getId());
+        assertEquals(savedMessageDto.getMessageBody(), messageResponseDto.getMessageBody());
     }
 }
