@@ -36,6 +36,7 @@ public class MessageServiceImpl implements MessageService{
 	private ModelMapper mapper;
 
 	public MessageServiceImpl() {
+		this.mapper = new ModelMapper();
         executorService = Executors.newScheduledThreadPool(1);
     }
 	
