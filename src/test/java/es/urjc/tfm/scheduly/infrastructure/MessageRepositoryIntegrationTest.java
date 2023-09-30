@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -95,5 +97,29 @@ public class MessageRepositoryIntegrationTest {
         assertNull(retrievedMessagePostDelete);
     }
     
-    
+    @Test
+    public void saveFindAllAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
+        
+		String responseJson = "{\"messageBody\": \"some random text\"}";
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        
+        MessageEntity message1 = objectMapper.readValue(responseJson,  MessageEntity.class);
+        message1 = messageRepository.save(message1);
+        MessageEntity message2 = objectMapper.readValue(responseJson,  MessageEntity.class);
+        message2 = messageRepository.save(message2);
+        
+        List<MessageEntity> retrievedMessageList = messageRepository.findAll();
+        assertEquals(message1.getId(), retrievedMessageList.get(0).getId());
+        assertEquals(message2.getId(), retrievedMessageList.get(1).getId());
+        
+        messageRepository.deleteById(message1.getId());
+        messageRepository.deleteById(message2.getId());
+        
+        MessageEntity retrievedMessagePostDelete1 = messageRepository.findById(message1.getId()).orElse(null);
+        assertNull(retrievedMessagePostDelete1);
+        MessageEntity retrievedMessagePostDelete2 = messageRepository.findById(message2.getId()).orElse(null);
+        assertNull(retrievedMessagePostDelete2);
+    }
 }

@@ -1,6 +1,8 @@
 package es.urjc.tfm.scheduly.infrastructure.adapters;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,14 @@ public class MessageJpaRepositoryAdapter implements MessageRepository{
 	}
 
 	@Override
+	public List<FullMessageDto> findAll() {
+		return messageJpaRepository.findAll()
+				.stream()
+				.map(messageEntity -> mapper.map(messageEntity, FullMessageDto.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public FullMessageDto save(FullMessageDto fullMessageDto) {
 		return mapper.map(
 				this.messageJpaRepository.save(
@@ -43,5 +53,7 @@ public class MessageJpaRepositoryAdapter implements MessageRepository{
 	public void deleteById(Long id) {	
 		this.messageJpaRepository.deleteById(id);
 	}
+
+	
 	
 }

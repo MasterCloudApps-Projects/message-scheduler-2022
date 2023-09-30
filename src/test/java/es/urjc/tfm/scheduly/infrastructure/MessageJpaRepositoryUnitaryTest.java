@@ -9,6 +9,8 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.infrastructure.adapters.MessageJpaRepositoryAdapter;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,6 +38,26 @@ public class MessageJpaRepositoryUnitaryTest {
         Optional<FullMessageDto> result = messageJpaRepositoryAdapter.findById(messageId);
 
         assertEquals(expectedMessage.getMessageBody(), result.get().getMessageBody());
+    }
+
+    @Test
+    public void findAllTest() {
+        Long messageId = 1L;
+        Long messageId2 = 2L;
+        List<MessageEntity> entityList = new ArrayList<>();
+        MessageEntity expectedMessage1 = new MessageEntity(messageId,"Random message body number 1");
+        MessageEntity expectedMessage2 = new MessageEntity(messageId2,"Random message body number 2");
+        entityList.add(expectedMessage1);
+        entityList.add(expectedMessage2);
+
+        when(messageJpaRepository.findAll()).thenReturn(entityList);
+
+        List<FullMessageDto> result = messageJpaRepositoryAdapter.findAll();
+
+        assertEquals(expectedMessage1.getId(), result.get(0).getId());
+        assertEquals(expectedMessage2.getId(), result.get(1).getId());
+        assertEquals(expectedMessage1.getMessageBody(), result.get(0).getMessageBody());
+        assertEquals(expectedMessage2.getMessageBody(), result.get(1).getMessageBody());
     }
 
     @Test

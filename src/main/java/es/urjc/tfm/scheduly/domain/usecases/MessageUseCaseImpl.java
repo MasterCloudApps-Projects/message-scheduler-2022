@@ -1,5 +1,6 @@
 package es.urjc.tfm.scheduly.domain.usecases;
 
+import java.util.List;
 import java.util.Optional;
 
 import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
@@ -19,6 +20,11 @@ public class MessageUseCaseImpl implements MessageUseCase{
 	}
 
 	@Override
+	public List<FullMessageDto> findAll() {
+		return this.messageRepository.findAll();
+	}
+
+	@Override
 	public FullMessageDto createMessage(FullMessageDto fullMessageDto) {
 		return messageRepository.save(fullMessageDto);
 	}
@@ -27,6 +33,5 @@ public class MessageUseCaseImpl implements MessageUseCase{
 	public void deleteMessage(Long id ) {
 		this.messageRepository.deleteById(id);
 	}
-	
-	
+
 }
