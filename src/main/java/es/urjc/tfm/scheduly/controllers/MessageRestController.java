@@ -55,7 +55,7 @@ public class MessageRestController {
     }
 	
 	@PostMapping("/schedule")
-    public ResponseEntity<MessageResponseDto> scheduleMessage(@RequestBody MessageRequestDto message) {
+    public ResponseEntity<MessageResponseDto> scheduleMessage(@RequestBody MessageRequestDto message)throws Exception {
     	MessageResponseDto scheduledMessage = messageService.scheduleMessage(message);
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduledMessage);
     }

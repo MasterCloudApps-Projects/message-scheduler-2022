@@ -7,8 +7,10 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
+import es.urjc.tfm.scheduly.exceptions.WrongParamsException;
 import es.urjc.tfm.scheduly.services.impl.MessageServiceImpl;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -95,7 +97,7 @@ public class MessageServiceUnitaryTest {
     }
     
     @Test
-    public void testScheduleMessage() {
+    public void testScheduleMessage() throws WrongParamsException {
  
     	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body", 2024, 9, 24, 10, 10);
         ZonedDateTime executionTime = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
@@ -109,5 +111,18 @@ public class MessageServiceUnitaryTest {
 
         assertEquals(savedMessageDto.getId(), messageResponseDto.getId());
         assertEquals(savedMessageDto.getMessageBody(), messageResponseDto.getMessageBody());
+    }
+    
+    @Test
+    public void testScheduleMessageWrongParamsException() throws WrongParamsException {
+ 
+        assertThrows(WrongParamsException.class, () -> {
+        	messageService.scheduleMessage(new MessageRequestDto(null, 2024, 9, 24, 10, 10));
+        });
+        
+        assertThrows(WrongParamsException.class, () -> {
+        	messageService.scheduleMessage(new MessageRequestDto("Random message body", 202, 9, 24, 10, 10));
+        });
+        
     }
 }

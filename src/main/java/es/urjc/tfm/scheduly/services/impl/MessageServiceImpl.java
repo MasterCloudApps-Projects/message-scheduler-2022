@@ -22,6 +22,7 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
+import es.urjc.tfm.scheduly.exceptions.WrongParamsException;
 import es.urjc.tfm.scheduly.services.MessageService;
 
 @Service
@@ -72,7 +73,7 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) {
+	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) throws WrongParamsException {
 		FullMessageDto fullMessageDto = generateFullMessageDto(messageRequestDto);
 		
 		MessageResponseDto messageResponseDto = mapper.map(
@@ -109,9 +110,22 @@ public class MessageServiceImpl implements MessageService{
 		   );
 	}
 
-	private FullMessageDto generateFullMessageDto(MessageRequestDto messageRequestDto){
+	private boolean rightParams(MessageRequestDto messageRequestDto) {
+		return  messageRequestDto.getMessageBody() != null && 
+				messageRequestDto.getMessageBody()instanceof String &&
+				messageRequestDto.getYear() > 2000 &&
+				messageRequestDto.getMonth() >= 1 && messageRequestDto.getMonth() <= 12 &&
+				messageRequestDto.getDay() >= 1 && messageRequestDto.getDay() <= 31 &&
+				messageRequestDto.getHour() >= 0 && messageRequestDto.getHour() <= 23 &&
+				messageRequestDto.getMinute() >= 0 && messageRequestDto.getMinute() <= 59 ;
+	}
+
+	private FullMessageDto generateFullMessageDto(MessageRequestDto messageRequestDto) throws WrongParamsException{
 		ZonedDateTime executionTimeDate = this.calculeExecutionDate(messageRequestDto);
 		LocalDateTime serverExecutionTime = executionTimeDate.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+		if (!rightParams(messageRequestDto)) {
+			throw new WrongParamsException();
+		}
 		return new FullMessageDto(messageRequestDto.getMessageBody(), executionTimeDate, serverExecutionTime);
 	}
 }
