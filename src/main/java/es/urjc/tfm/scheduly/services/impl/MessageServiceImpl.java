@@ -29,13 +29,11 @@ import es.urjc.tfm.scheduly.services.MessageService;
 @Service
 public class MessageServiceImpl implements MessageService{
 
-	@Autowired
 	private MessageUseCase messageUseCase;
 	
 	@Autowired
 	private FeatureManager featureManager;
 
-	@Autowired
 	private ComunicationUseCase comunicationUseCase;
 	
 	private ScheduledExecutorService executorService;
@@ -47,6 +45,7 @@ public class MessageServiceImpl implements MessageService{
         executorService = Executors.newScheduledThreadPool(1);
     }
 	
+	@Autowired
 	public MessageServiceImpl(MessageUseCase messageUseCase, ComunicationUseCase comunicationUseCase) {
 		this.messageUseCase = messageUseCase;
 		this.comunicationUseCase = comunicationUseCase;
