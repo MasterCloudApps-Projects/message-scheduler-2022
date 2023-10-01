@@ -71,24 +71,13 @@ public class MessageServiceImpl implements MessageService{
 
 	@Override
 	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) {
-		FullMessageDto fullMessageDto = new FullMessageDto(messageRequestDto.getMessageBody(), ZonedDateTime.of(
-				messageRequestDto.getYear(), 
-				messageRequestDto.getMonth(), 
-				messageRequestDto.getDay(), 
-				messageRequestDto.getHour(), 
-				messageRequestDto.getMinute(),
-				0, 0, ZoneId.of("Europe/Madrid")));
+		FullMessageDto fullMessageDto = generateFullMessageDto(messageRequestDto);
 		if(featureManager!=null&&featureManager.isActive(SchedulyFeatures.SCHEDULE_MESSAGE_SCHEDULER)) {
-			LocalDateTime executionTime = LocalDateTime.of(messageRequestDto.getYear(), 
-					messageRequestDto.getMonth(), 
-					messageRequestDto.getDay(), 
-					messageRequestDto.getHour(), 
-					messageRequestDto.getMinute(),0);
 			Runnable task = () -> {
 				System.out.println("Message sent from scheduler: " + messageRequestDto.getMessageBody());
 			};
 			
-		    long initialWait = executionTime.toInstant(ZoneOffset.UTC).toEpochMilli() - System.currentTimeMillis();
+		    long initialWait = fullMessageDto.getServerExecutionTime().toInstant(ZoneOffset.UTC).toEpochMilli() - System.currentTimeMillis();
 		    if (initialWait >= 0) {
 				executorService.schedule(task, initialWait, TimeUnit.MILLISECONDS);
 			}
@@ -100,5 +89,22 @@ public class MessageServiceImpl implements MessageService{
 		
 
 		
+	}
+
+	private ZonedDateTime calculeExecutionDate(MessageRequestDto messageRequestDto) {
+		return ZonedDateTime.of(
+				messageRequestDto.getYear(), 
+				messageRequestDto.getMonth(), 
+				messageRequestDto.getDay(), 
+				messageRequestDto.getHour(), 
+				messageRequestDto.getMinute(),
+				0, 0, ZoneId.of("Europe/Madrid")
+		   );
+	}
+
+	private FullMessageDto generateFullMessageDto(MessageRequestDto messageRequestDto){
+		ZonedDateTime executionTimeDate = this.calculeExecutionDate(messageRequestDto);
+		LocalDateTime serverExecutionTime = executionTimeDate.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+		return new FullMessageDto(messageRequestDto.getMessageBody(), executionTimeDate, serverExecutionTime);
 	}
 }

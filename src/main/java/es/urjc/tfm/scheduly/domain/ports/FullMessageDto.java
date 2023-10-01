@@ -21,7 +21,7 @@ public class FullMessageDto {
 		this.serverExecutionTime = serverExecutionTime;
 	}
 	
-	public FullMessageDto(String messageBody, ZonedDateTime executionTimeDate) {
+	public FullMessageDto(String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime) {
 		this.messageBody = messageBody;
 		this.executionTime = executionTimeDate;
 		this.serverExecutionTime = serverExecutionTime;
