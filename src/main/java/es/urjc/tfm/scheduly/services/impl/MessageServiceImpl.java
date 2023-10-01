@@ -47,8 +47,9 @@ public class MessageServiceImpl implements MessageService{
         executorService = Executors.newScheduledThreadPool(1);
     }
 	
-	public MessageServiceImpl(MessageUseCase messageUseCase) {
+	public MessageServiceImpl(MessageUseCase messageUseCase, ComunicationUseCase comunicationUseCase) {
 		this.messageUseCase = messageUseCase;
+		this.comunicationUseCase = comunicationUseCase;
 		this.mapper = new ModelMapper();
 		executorService = Executors.newScheduledThreadPool(1);
 	}
@@ -80,10 +81,10 @@ public class MessageServiceImpl implements MessageService{
 	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) {
 		FullMessageDto fullMessageDto = generateFullMessageDto(messageRequestDto);
 		if(featureManager!=null&&featureManager.isActive(SchedulyFeatures.SCHEDULE_MESSAGE_SCHEDULER)) {
-			Runnable task = () -> {
-				System.out.println("Message sent from scheduler: " + fullMessageDto.getMessageBody());
+		Runnable task = () -> {
 				try {
 					this.comunicationUseCase.sendMessage(fullMessageDto.getMessageBody());
+					System.out.println("Message sent from scheduler: " + fullMessageDto.getMessageBody());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (SlackApiException e) {
