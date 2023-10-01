@@ -14,11 +14,9 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.togglz.core.manager.FeatureManager;
 
 import com.slack.api.methods.SlackApiException;
 
-import es.urjc.tfm.scheduly.SchedulyFeatures;
 import es.urjc.tfm.scheduly.domain.ports.ComunicationUseCase;
 import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
@@ -30,9 +28,6 @@ import es.urjc.tfm.scheduly.services.MessageService;
 public class MessageServiceImpl implements MessageService{
 
 	private MessageUseCase messageUseCase;
-	
-	@Autowired
-	private FeatureManager featureManager;
 
 	private ComunicationUseCase comunicationUseCase;
 	
@@ -79,11 +74,13 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) {
 		FullMessageDto fullMessageDto = generateFullMessageDto(messageRequestDto);
-		if(featureManager!=null&&featureManager.isActive(SchedulyFeatures.SCHEDULE_MESSAGE_SCHEDULER)) {
+		
+		MessageResponseDto messageResponseDto = mapper.map(
+				messageUseCase.createMessage(fullMessageDto),
+				MessageResponseDto.class);
 		Runnable task = () -> {
 				try {
-					this.comunicationUseCase.sendMessage(fullMessageDto.getMessageBody());
-					System.out.println("Message sent from scheduler: " + fullMessageDto.getMessageBody());
+					this.comunicationUseCase.sendMessage(messageResponseDto.getMessageBody());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (SlackApiException e) {
@@ -98,13 +95,7 @@ public class MessageServiceImpl implements MessageService{
 				executorService.schedule(task, initialWait, TimeUnit.MILLISECONDS);
 			}
 
-		}
-		return mapper.map(
-				messageUseCase.createMessage(fullMessageDto),
-				MessageResponseDto.class);
-		
-
-		
+		return messageResponseDto;
 	}
 
 	private ZonedDateTime calculeExecutionDate(MessageRequestDto messageRequestDto) {
