@@ -1,5 +1,6 @@
 package es.urjc.tfm.scheduly.services.impl;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.togglz.core.manager.FeatureManager;
 
+import com.slack.api.methods.SlackApiException;
+
 import es.urjc.tfm.scheduly.SchedulyFeatures;
+import es.urjc.tfm.scheduly.domain.ports.ComunicationUseCase;
 import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
@@ -31,6 +35,9 @@ public class MessageServiceImpl implements MessageService{
 	@Autowired
 	private FeatureManager featureManager;
 
+	@Autowired
+	private ComunicationUseCase comunicationUseCase;
+	
 	private ScheduledExecutorService executorService;
 	
 	private ModelMapper mapper;
@@ -74,7 +81,14 @@ public class MessageServiceImpl implements MessageService{
 		FullMessageDto fullMessageDto = generateFullMessageDto(messageRequestDto);
 		if(featureManager!=null&&featureManager.isActive(SchedulyFeatures.SCHEDULE_MESSAGE_SCHEDULER)) {
 			Runnable task = () -> {
-				System.out.println("Message sent from scheduler: " + messageRequestDto.getMessageBody());
+				System.out.println("Message sent from scheduler: " + fullMessageDto.getMessageBody());
+				try {
+					this.comunicationUseCase.sendMessage(fullMessageDto.getMessageBody());
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (SlackApiException e) {
+					e.printStackTrace();
+				}
 			};
 			
 		    long initialWait = fullMessageDto.getServerExecutionTime().toInstant(ZoneOffset.UTC).toEpochMilli() - System.currentTimeMillis();
