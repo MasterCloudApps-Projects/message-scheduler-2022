@@ -45,7 +45,7 @@ jobs:
           java-version: '17'
       - name: Replace Slack OAuth Token
         run: |
-          sed -i "s/slack.oauth.token=.*/slack.oauth.token=${{ secrets.SLACK_TOKEN }}/" src/main/resources/application.properties
+          sed -i "s/slack.oauth.token=.*/slack.oauth.token=${{ secrets.SLACK_TOKEN_USER }}/" src/main/resources/application.properties
       - name: Publish package
         run: mvn --batch-mode deploy -Dmaven.test.skip=true
         env:
