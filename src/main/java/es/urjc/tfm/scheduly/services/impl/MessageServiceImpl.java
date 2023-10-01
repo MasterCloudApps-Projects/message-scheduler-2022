@@ -89,6 +89,8 @@ public class MessageServiceImpl implements MessageService{
 					e.printStackTrace();
 				} catch (SlackApiException e) {
 					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			};
 			
