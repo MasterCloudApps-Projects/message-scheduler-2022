@@ -44,7 +44,7 @@ public class MessageServiceUnitaryTest {
     public void testCreateMessage() {
  
     	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body");
-    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", null, null);
+    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", null, null, false);
         
         when(messageUseCase.createMessage(any(FullMessageDto.class))).thenReturn(savedMessageDto);
 
@@ -60,7 +60,7 @@ public class MessageServiceUnitaryTest {
         Long messageId = 1L;
         ZonedDateTime executionTime = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        FullMessageDto fullMessageDto = new FullMessageDto(messageId, "Random message body", executionTime, serverExecutionTime);
+        FullMessageDto fullMessageDto = new FullMessageDto(messageId, "Random message body", executionTime, serverExecutionTime, false);
         
         when(messageUseCase.findById(messageId)).thenReturn(Optional.of(fullMessageDto));
 
@@ -77,11 +77,11 @@ public class MessageServiceUnitaryTest {
         Long messageId1 = 1L;
         ZonedDateTime executionTime1 = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime1 = executionTime1.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        FullMessageDto fullMessageDto1 = new FullMessageDto(messageId1,"Random message body number 1", executionTime1, serverExecutionTime1);
+        FullMessageDto fullMessageDto1 = new FullMessageDto(messageId1,"Random message body number 1", executionTime1, serverExecutionTime1, false);
         Long messageId2 = 2L;
         ZonedDateTime executionTime2 = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime2 = executionTime1.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        FullMessageDto fullMessageDto2 = new FullMessageDto(messageId2,"Random message body number 2", executionTime2, serverExecutionTime2);
+        FullMessageDto fullMessageDto2 = new FullMessageDto(messageId2,"Random message body number 2", executionTime2, serverExecutionTime2, false);
         fullMessageDtoList.add(fullMessageDto1);
         fullMessageDtoList.add(fullMessageDto2);
         
@@ -104,7 +104,7 @@ public class MessageServiceUnitaryTest {
         ZonedDateTime executionTime = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
 		
-    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", executionTime, serverExecutionTime);
+    	FullMessageDto savedMessageDto = new FullMessageDto(1L, "Random message body", executionTime, serverExecutionTime, false);
         
         when(messageUseCase.createMessage(any(FullMessageDto.class))).thenReturn(savedMessageDto);
 

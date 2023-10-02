@@ -9,22 +9,25 @@ public class FullMessageDto {
 	private String messageBody;
 	private ZonedDateTime executionTime;
 	private LocalDateTime serverExecutionTime;
+	private boolean messageDispatched;
 	
 	public FullMessageDto() {
 	}
 	
-	public FullMessageDto(Long id, String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime) {
+	public FullMessageDto(Long id, String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime, boolean messageDispatched) {
 		super();
         this.id = id;
 		this.messageBody = messageBody;
 		this.executionTime = executionTimeDate;
 		this.serverExecutionTime = serverExecutionTime;
+		this.messageDispatched = messageDispatched;
 	}
 	
 	public FullMessageDto(String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime) {
 		this.messageBody = messageBody;
 		this.executionTime = executionTimeDate;
 		this.serverExecutionTime = serverExecutionTime;
+		this.messageDispatched = false;
 	}
 
 	public FullMessageDto(String messageBody) {
@@ -58,5 +61,12 @@ public class FullMessageDto {
 	}
 	public void setServerExecutionTime(LocalDateTime serverExecutionTime) {
 		this.serverExecutionTime = serverExecutionTime;
+	}
+
+	public boolean isMessageDispatched() {
+		return messageDispatched;
+	}
+	public void setMessageDispatched(boolean messageDispatched) {
+		this.messageDispatched = messageDispatched;
 	}
 }
