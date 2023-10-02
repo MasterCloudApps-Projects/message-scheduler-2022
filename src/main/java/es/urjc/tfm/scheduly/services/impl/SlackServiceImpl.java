@@ -10,6 +10,8 @@ import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
+
+import es.urjc.tfm.scheduly.exceptions.NotSentMessageException;
 import es.urjc.tfm.scheduly.services.SlackService;
 
 @Service
@@ -26,7 +28,7 @@ public class SlackServiceImpl implements SlackService {
 		this.channelId = channel;
 	}
 
-	public String sendMessage(String messageText) throws IOException, SlackApiException {
+	public String sendMessage(String messageText) throws IOException, SlackApiException, NotSentMessageException {
 		Slack slack = Slack.getInstance();
         MethodsClient methods = slack.methods(token);
 	    ChatPostMessageRequest messageRequest = ChatPostMessageRequest.builder()
@@ -37,7 +39,7 @@ public class SlackServiceImpl implements SlackService {
 	    ChatPostMessageResponse messageResponse = methods.chatPostMessage(messageRequest);
 	    if (messageResponse.isOk()) {
 	        return "Message sent successfully: " + messageResponse.getMessage().getText();
-	    }  else return "Message sending failed: " + messageResponse.getError();
+	    }  else throw new NotSentMessageException(messageResponse.getError());
 	    
     }
 }

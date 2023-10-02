@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.slack.api.methods.SlackApiException;
 
 import es.urjc.tfm.scheduly.domain.ports.ComunicationService;
+import es.urjc.tfm.scheduly.exceptions.NotSentMessageException;
 import es.urjc.tfm.scheduly.services.SlackService;
 
 @Component
@@ -20,7 +21,7 @@ public class SlackServiceAdapter implements ComunicationService{
 	}
 
 	@Override
-	public void sendMessage(String message) throws IOException, SlackApiException {
+	public void sendMessage(String message) throws IOException, SlackApiException, NotSentMessageException {
 		this.slackService.sendMessage(message);
 	}
 
