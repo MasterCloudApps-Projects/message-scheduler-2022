@@ -34,4 +34,13 @@ public class MessageUseCaseImpl implements MessageUseCase{
 		this.messageRepository.deleteById(id);
 	}
 
+	@Override
+	public FullMessageDto updateMessageDispatched(Long id) {
+		FullMessageDto fullMessageDto = this.messageRepository.findById(id).orElseThrow();
+        if (!fullMessageDto.isMessageDispatched()) {
+        	fullMessageDto.setMessageDispatched(true);
+        	fullMessageDto = this.messageRepository.save(fullMessageDto);
+        }
+        return fullMessageDto;
+	}
 }

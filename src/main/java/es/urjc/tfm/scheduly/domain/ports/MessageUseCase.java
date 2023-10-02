@@ -13,4 +13,5 @@ public interface MessageUseCase {
 
 	public void deleteMessage(Long id);
 	
+	public FullMessageDto updateMessageDispatched(Long id);
 }
