@@ -6,10 +6,10 @@ import org.togglz.core.context.FeatureContext;
 
 public enum SchedulyFeatures implements Feature {
  
-    /*@Label("Modify when needed")
-    FEATURE_TOGGLE_NAME;
-     boolean isActive() {
+    @Label("MessageUseCase.updateMessageDispatched test")
+    UPDATE_MESSAGE_DISPATCHED;
+    public boolean isActive() {
         return FeatureContext.getFeatureManager().isActive(this);
-    }*/
+    }
     
 }

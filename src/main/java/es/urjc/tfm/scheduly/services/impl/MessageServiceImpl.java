@@ -14,9 +14,11 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.togglz.core.manager.FeatureManager;
 
 import com.slack.api.methods.SlackApiException;
 
+import es.urjc.tfm.scheduly.SchedulyFeatures;
 import es.urjc.tfm.scheduly.domain.ports.ComunicationUseCase;
 import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
@@ -37,6 +39,9 @@ public class MessageServiceImpl implements MessageService{
 	
 	private ModelMapper mapper;
 
+	@Autowired
+	private FeatureManager featureManager;
+	
 	public MessageServiceImpl() {
 		this.mapper = new ModelMapper();
         executorService = Executors.newScheduledThreadPool(1);
@@ -83,6 +88,9 @@ public class MessageServiceImpl implements MessageService{
 		Runnable task = () -> {
 				try {
 					this.comunicationUseCase.sendMessage(messageResponseDto.getMessageBody());
+					if(featureManager!=null&&featureManager.isActive(SchedulyFeatures.UPDATE_MESSAGE_DISPATCHED)) {
+						this.messageUseCase.updateMessageDispatched(messageResponseDto.getId());
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (SlackApiException e) {
