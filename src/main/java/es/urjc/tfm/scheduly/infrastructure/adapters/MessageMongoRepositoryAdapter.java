@@ -21,9 +21,9 @@ public class MessageMongoRepositoryAdapter implements MessageRepository{
 	
 	private ModelMapper mapper;
 	
-	public MessageMongoRepositoryAdapter(MessageMongoRepository messageMongoRepository, ModelMapper mapper) {
+	public MessageMongoRepositoryAdapter(MessageMongoRepository messageMongoRepository) {
 		this.messageMongoRepository = messageMongoRepository;
-		this.mapper = mapper;
+		this.mapper = new ModelMapper();
 	}
 
 	@Override

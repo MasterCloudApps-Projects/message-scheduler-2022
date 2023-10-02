@@ -30,6 +30,14 @@ public class MessageEntityMongo {
         this.messageDispatched = messageDispatched;
     }
 
+    public MessageEntityMongo(Long id, String messageBody, ZonedDateTime executionTime, LocalDateTime serverExecutionTime, boolean messageDispatched) {
+        this.id = id;
+        this.messageBody = messageBody;
+        this.executionTime = executionTime;
+        this.serverExecutionTime = serverExecutionTime;
+        this.messageDispatched = messageDispatched;
+    }
+
     public Long getId() {
         return id;
     }
