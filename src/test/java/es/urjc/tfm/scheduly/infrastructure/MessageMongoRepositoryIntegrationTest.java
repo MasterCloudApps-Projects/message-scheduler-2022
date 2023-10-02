@@ -17,7 +17,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -43,21 +42,13 @@ public class MessageMongoRepositoryIntegrationTest {
 
     private static MongoClient mongoClient;
 
-    @Container
-    private static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.22")
-            .withDatabaseName("mysql")
-            .withUsername("root")
-            .withPassword("password");
-
+    
     @LocalServerPort
     private int port;
     
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoContainer::getReplicaSetUrl); // Configure Spring Data MongoDB to use the MongoDB container
-        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl); 
-        registry.add("spring.datasource.username", mysqlContainer::getUsername);
-        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.data.mongodb.uri", mongoContainer::getReplicaSetUrl);
     }
     
     @BeforeAll
@@ -65,14 +56,12 @@ public class MessageMongoRepositoryIntegrationTest {
         mongoContainer.start();
         String connectionString = mongoContainer.getReplicaSetUrl();
         mongoClient = MongoClients.create(connectionString);  
-        mysqlContainer.start();
     }
 
     @AfterAll
     public static void tearDown() {
         mongoClient.close();
         mongoContainer.stop();
-        mysqlContainer.stop();
     }
 
     @Test

@@ -116,11 +116,6 @@ jobs:
         uses: okteto/namespace@latest
         with:
           namespace: molynx
-      - name: "Deploy mysql"
-        uses: okteto/apply@latest
-        with:
-          namespace: molynx
-          manifest: ./k8s/mysql.yml
       - name: "Deploy mongo"
         uses: okteto/apply@latest
         with:
