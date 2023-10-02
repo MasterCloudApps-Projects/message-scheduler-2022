@@ -7,6 +7,7 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
+import es.urjc.tfm.scheduly.exceptions.OutOfDateException;
 import es.urjc.tfm.scheduly.exceptions.WrongParamsException;
 import es.urjc.tfm.scheduly.services.impl.MessageServiceImpl;
 
@@ -97,7 +98,7 @@ public class MessageServiceUnitaryTest {
     }
     
     @Test
-    public void testScheduleMessage() throws WrongParamsException {
+    public void testScheduleMessage() throws WrongParamsException, OutOfDateException {
  
     	MessageRequestDto messageRequestDto = new MessageRequestDto("Random message body", 2024, 9, 24, 10, 10);
         ZonedDateTime executionTime = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
@@ -122,6 +123,19 @@ public class MessageServiceUnitaryTest {
         
         assertThrows(WrongParamsException.class, () -> {
         	messageService.scheduleMessage(new MessageRequestDto("Random message body", 202, 9, 24, 10, 10));
+        });
+        
+    }
+
+    @Test
+    public void testScheduleMessageOutOfDateException() throws OutOfDateException {
+ 
+        assertThrows(OutOfDateException.class, () -> {
+        	messageService.scheduleMessage(new MessageRequestDto("Random message body", 2020, 9, 24, 10, 10));
+        });
+        
+        assertThrows(OutOfDateException.class, () -> {
+        	messageService.scheduleMessage(new MessageRequestDto("Random message body", 2023, 10, 2, 9, 41));
         });
         
     }

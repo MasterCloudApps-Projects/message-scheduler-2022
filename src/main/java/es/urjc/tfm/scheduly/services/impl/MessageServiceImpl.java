@@ -22,6 +22,7 @@ import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
+import es.urjc.tfm.scheduly.exceptions.OutOfDateException;
 import es.urjc.tfm.scheduly.exceptions.WrongParamsException;
 import es.urjc.tfm.scheduly.services.MessageService;
 
@@ -73,7 +74,7 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) throws WrongParamsException {
+	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) throws WrongParamsException, OutOfDateException {
 		FullMessageDto fullMessageDto = generateFullMessageDto(messageRequestDto);
 		
 		MessageResponseDto messageResponseDto = mapper.map(
@@ -120,12 +121,16 @@ public class MessageServiceImpl implements MessageService{
 				messageRequestDto.getMinute() >= 0 && messageRequestDto.getMinute() <= 59 ;
 	}
 
-	private FullMessageDto generateFullMessageDto(MessageRequestDto messageRequestDto) throws WrongParamsException{
+	private FullMessageDto generateFullMessageDto(MessageRequestDto messageRequestDto) throws WrongParamsException, OutOfDateException{
 		ZonedDateTime executionTimeDate = this.calculeExecutionDate(messageRequestDto);
 		LocalDateTime serverExecutionTime = executionTimeDate.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+		LocalDateTime currentDate = LocalDateTime.now();
 		if (!rightParams(messageRequestDto)) {
 			throw new WrongParamsException();
 		}
+		if (serverExecutionTime.isBefore(currentDate)) {
+	        throw new OutOfDateException();
+	    }	
 		return new FullMessageDto(messageRequestDto.getMessageBody(), executionTimeDate, serverExecutionTime);
 	}
 }

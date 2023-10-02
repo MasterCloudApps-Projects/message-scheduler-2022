@@ -4,6 +4,7 @@ import java.util.List;
 
 import es.urjc.tfm.scheduly.dtos.MessageRequestDto;
 import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
+import es.urjc.tfm.scheduly.exceptions.OutOfDateException;
 import es.urjc.tfm.scheduly.exceptions.WrongParamsException;
 
 public interface MessageService {
@@ -16,6 +17,6 @@ public interface MessageService {
 
 	public void deleteMessage(Long id);
 
-	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) throws WrongParamsException;
+	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) throws WrongParamsException, OutOfDateException;
 	 
 }
