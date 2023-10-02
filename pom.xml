@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>es.urjc.tfm</groupId>
 	<artifactId>scheduly</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>scheduly</name>
 	<description>Message scheduler app</description>
 	<properties>

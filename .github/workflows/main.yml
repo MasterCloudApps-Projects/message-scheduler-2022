@@ -107,7 +107,7 @@ jobs:
       - name: Update schedule.yml
         run: |
           echo "Scheduly image version: ${{ needs.publish_in_dockerhub.outputs.tag }}"
-          sed -i 's|image: molynx/scheduly:0.0.1-SNAPSHOT|image: molynx/scheduly:${{ needs.publish_in_dockerhub.outputs.tag }}|' k8s/scheduly.yml
+          sed -i 's|image: molynx/scheduly:1.0.0-SNAPSHOT|image: molynx/scheduly:${{ needs.publish_in_dockerhub.outputs.tag }}|' k8s/scheduly.yml
       - uses: okteto/context@latest
         with:
           token: ${{ secrets.OKTETO_TOKEN }}

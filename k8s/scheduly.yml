@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: scheduly
-          image: molynx/scheduly:0.0.1-SNAPSHOT
+          image: molynx/scheduly:1.0.0-SNAPSHOT
           ports:
             - name: http
               containerPort: 8080
