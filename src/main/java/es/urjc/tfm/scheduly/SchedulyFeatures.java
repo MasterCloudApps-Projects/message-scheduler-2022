@@ -6,10 +6,10 @@ import org.togglz.core.context.FeatureContext;
 
 public enum SchedulyFeatures implements Feature {
  
-    @Label("Activates mongodb")
-    MONGO_REPOSITORY;
+    /*@Label("Modify when needed")
+    FEATURE_TOGGLE_NAME;
     public boolean isActive() {
         return FeatureContext.getFeatureManager().isActive(this);
-    }
+    }*/
     
 }

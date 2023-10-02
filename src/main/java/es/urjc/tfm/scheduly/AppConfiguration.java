@@ -1,10 +1,8 @@
 package es.urjc.tfm.scheduly;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.togglz.core.manager.FeatureManager;
 
 import es.urjc.tfm.scheduly.domain.ports.ComunicationService;
 import es.urjc.tfm.scheduly.domain.ports.ComunicationUseCase;
@@ -12,9 +10,7 @@ import es.urjc.tfm.scheduly.domain.ports.MessageRepository;
 import es.urjc.tfm.scheduly.domain.ports.MessageUseCase;
 import es.urjc.tfm.scheduly.domain.usecases.ComunicationUseCaseImpl;
 import es.urjc.tfm.scheduly.domain.usecases.MessageUseCaseImpl;
-import es.urjc.tfm.scheduly.infrastructure.MessageJpaRepository;
 import es.urjc.tfm.scheduly.infrastructure.MessageMongoRepository;
-import es.urjc.tfm.scheduly.infrastructure.adapters.MessageJpaRepositoryAdapter;
 import es.urjc.tfm.scheduly.infrastructure.adapters.MessageMongoRepositoryAdapter;
 import es.urjc.tfm.scheduly.infrastructure.adapters.SlackServiceAdapter;
 import es.urjc.tfm.scheduly.services.SlackService;
@@ -22,9 +18,6 @@ import es.urjc.tfm.scheduly.services.SlackService;
 @Configuration
 public class AppConfiguration {
 
-	@Autowired
-	private FeatureManager featureManager;
-	
 	@Bean
 	public ModelMapper modelMapper() {
 	    return new ModelMapper();
@@ -36,11 +29,8 @@ public class AppConfiguration {
     }
 
 	@Bean
-    public MessageRepository messageRepository(MessageJpaRepository messageJpaRepository, MessageMongoRepository messageMongoRepository) {
-    	if(featureManager != null &&featureManager.isActive(SchedulyFeatures.MONGO_REPOSITORY) ) {
-			return new MessageMongoRepositoryAdapter(messageMongoRepository);
-		}else return new MessageJpaRepositoryAdapter(messageJpaRepository);
-	
+    public MessageRepository messageRepository(MessageMongoRepository messageMongoRepository) {
+		return new MessageMongoRepositoryAdapter(messageMongoRepository);
     }
 	
 	@Bean
