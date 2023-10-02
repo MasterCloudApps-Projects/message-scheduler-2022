@@ -135,7 +135,7 @@ public class MessageServiceUnitaryTest {
         });
         
         assertThrows(OutOfDateException.class, () -> {
-        	messageService.scheduleMessage(new MessageRequestDto("Random message body", 2023, 10, 2, 9, 41));
+        	messageService.scheduleMessage(new MessageRequestDto("Random message body", 2023, 10, 2, 7, 41));
         });
         
     }
