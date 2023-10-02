@@ -1,5 +1,6 @@
 resources:
 - mysql.yml
+- mongodb.yml
 - scheduly.yml
 images:
 - name: scheduly
