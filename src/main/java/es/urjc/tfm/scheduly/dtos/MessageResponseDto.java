@@ -13,14 +13,16 @@ public class MessageResponseDto {
 	private ZonedDateTime executionTime;
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime serverExecutionTime;
-	
+	private boolean messageDispatched;
+
 	public MessageResponseDto() {}
-	public MessageResponseDto(Long id, String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime) {
+	public MessageResponseDto(Long id, String messageBody, ZonedDateTime executionTimeDate, LocalDateTime serverExecutionTime, boolean messageDispatched) {
 		super();
 		this.id = id;
 		this.messageBody = messageBody;
 		this.executionTime = executionTimeDate;
 		this.serverExecutionTime = serverExecutionTime;
+		this.messageDispatched = messageDispatched;
 	}
 	
 	public MessageResponseDto(String messageBody) {
@@ -53,5 +55,12 @@ public class MessageResponseDto {
 	}
 	public void setServerExecutionTime(LocalDateTime serverExecutionTime) {
 		this.serverExecutionTime = serverExecutionTime;
+	}
+
+	public boolean isMessageDispatched() {
+		return messageDispatched;
+	}
+	public void setMessageDispatched(boolean messageDispatched) {
+		this.messageDispatched = messageDispatched;
 	}
 }

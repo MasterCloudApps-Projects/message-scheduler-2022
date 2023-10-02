@@ -47,7 +47,7 @@ public class MessageRestControllerUnitaryTest {
         Long messageId = 1L;
         ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body", executionTime, serverExecutionTime);
+        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body", executionTime, serverExecutionTime, true);
 
         when(messageService.getMessage(messageId)).thenReturn(messageResponseDto);
 
@@ -64,9 +64,9 @@ public class MessageRestControllerUnitaryTest {
         Long messageId1 = 1L;
         ZonedDateTime executionTime1 =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime1 = executionTime1.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1", executionTime1, serverExecutionTime1);
+        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1", executionTime1, serverExecutionTime1, true);
         Long messageId2 = 2L;
-        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2", null, null);
+        MessageResponseDto messageResponseDto2 = new MessageResponseDto(messageId2,"Random message body number 2", null, null, false);
         MessageResponseDtoList.add(messageResponseDto1);
         MessageResponseDtoList.add(messageResponseDto2);
         
@@ -86,7 +86,7 @@ public class MessageRestControllerUnitaryTest {
         String messageRequestDtoContent = "{\"messageBody\": \"Random message body\"}";
         ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime);
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime, true);
 
         when(messageService.createMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
 
@@ -116,10 +116,10 @@ public class MessageRestControllerUnitaryTest {
         		+ "\"day\": 24,"
         		+ "\"hour\": 17,"
         		+ "\"minute\": 46}";
-        ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        ZonedDateTime executionTime =ZonedDateTime.of(2099, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
         LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
 		
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime);
+        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime, false);
         
         when(messageService.scheduleMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
 
