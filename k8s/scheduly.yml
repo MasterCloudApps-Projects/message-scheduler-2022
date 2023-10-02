@@ -42,6 +42,18 @@ spec:
               value: "3306"
             - name: DB_USER
               value: root
+            - name: SPRING_DATA_MONGODB_HOST
+              value: mongodb-service
+            - name: SPRING_DATA_MONGODB_PORT
+              value: "27017"
+            - name: SPRING_DATA_MONGODB_DATABASE
+              value: mongo
+            - name: SPRING_DATA_MONGODB_AUTHENTICATION-DATABASE
+              value: admin
+            - name: SPRING_DATA_MONGODB_USERNAME
+              value: root
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              value: password
 ---
 apiVersion: v1
 kind: Service
