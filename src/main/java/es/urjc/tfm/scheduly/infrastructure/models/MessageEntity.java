@@ -21,14 +21,17 @@ public class MessageEntity {
 
 	private LocalDateTime serverExecutionTime;
 
+	private boolean messageDispatched;
+	
 	public MessageEntity() {
 	}
-	public MessageEntity(Long id, String messageBody, ZonedDateTime executionTime, LocalDateTime serverExecutionTime) {
-		this.id = id;
+	public MessageEntity(Long id, String messageBody, ZonedDateTime executionTime, LocalDateTime serverExecutionTime, boolean messageDispatched) {
+    	this.id = id;
 		this.messageBody = messageBody;
-		this.executionTime = executionTime;
-		this.serverExecutionTime = serverExecutionTime;
-	}
+        this.executionTime = executionTime;
+        this.serverExecutionTime = serverExecutionTime;
+        this.messageDispatched = messageDispatched;
+    }
 	public MessageEntity(String messageBody) {
 		this.messageBody = messageBody;
 	}
@@ -60,4 +63,11 @@ public class MessageEntity {
     public void setServerExecutionTime(LocalDateTime serverExecutionTime) {
         this.serverExecutionTime = serverExecutionTime;
     }
+
+	public boolean isMessageDispatched() {
+		return messageDispatched;
+	}
+	public void setMessageDispatched(boolean messageDispatched) {
+		this.messageDispatched = messageDispatched;
+	}
 }

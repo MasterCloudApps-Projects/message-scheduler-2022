@@ -43,7 +43,7 @@ public class MessageJpaRepositoryUnitaryTest {
         ZonedDateTime executionTime = ZonedDateTime.of(2025, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
     	LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
     	
-        MessageEntity expectedMessage = new MessageEntity(messageId,"Random message body", executionTime, serverExecutionTime);
+        MessageEntity expectedMessage = new MessageEntity(messageId,"Random message body", executionTime, serverExecutionTime, false);
         when(messageJpaRepository.findById(messageId)).thenReturn(Optional.of(expectedMessage));
 
         Optional<FullMessageDto> result = messageJpaRepositoryAdapter.findById(messageId);
@@ -63,8 +63,8 @@ public class MessageJpaRepositoryUnitaryTest {
     	ZonedDateTime executionTime2 = ZonedDateTime.of(2024, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
     	LocalDateTime serverExecutionTime2 = executionTime2.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
 		
-        MessageEntity expectedMessage1 = new MessageEntity(messageId,"Random message body number 1", executionTime1, serverExecutionTime1);
-        MessageEntity expectedMessage2 = new MessageEntity(messageId2,"Random message body number 2", executionTime2, serverExecutionTime2);
+        MessageEntity expectedMessage1 = new MessageEntity(messageId,"Random message body number 1", executionTime1, serverExecutionTime1, false);
+        MessageEntity expectedMessage2 = new MessageEntity(messageId2,"Random message body number 2", executionTime2, serverExecutionTime2, false);
         entityList.add(expectedMessage1);
         entityList.add(expectedMessage2);
 
@@ -86,7 +86,7 @@ public class MessageJpaRepositoryUnitaryTest {
     	ZonedDateTime executionTime = ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
     	LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
 		
-    	MessageEntity messageToSave = new MessageEntity(1L,"Random message body",executionTime,serverExecutionTime);
+    	MessageEntity messageToSave = new MessageEntity(1L,"Random message body",executionTime,serverExecutionTime, false);
         when(messageJpaRepository.save(any(MessageEntity.class))).thenReturn(messageToSave);
 
         FullMessageDto result = messageJpaRepositoryAdapter.save(messageToSaveDto);
