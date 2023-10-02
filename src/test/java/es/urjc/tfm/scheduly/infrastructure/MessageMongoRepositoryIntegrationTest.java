@@ -43,6 +43,12 @@ public class MessageMongoRepositoryIntegrationTest {
 
     private static MongoClient mongoClient;
 
+    @Container
+    private static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.22")
+            .withDatabaseName("mysql")
+            .withUsername("root")
+            .withPassword("password");
+
     @LocalServerPort
     private int port;
     
@@ -69,21 +75,10 @@ public class MessageMongoRepositoryIntegrationTest {
         mysqlContainer.stop();
     }
 
-    /*mysql*/
-    @Container
-    private static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.22")
-            .withDatabaseName("mysql")
-            .withUsername("root")
-            .withPassword("password");
-
-    
-    
-    
-    // mysql
     @Test
     public void saveAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson = "{\"id\": 1,\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -100,7 +95,7 @@ public class MessageMongoRepositoryIntegrationTest {
     @Test
     public void saveFindByIdAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson = "{\"id\": 1, \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -118,15 +113,16 @@ public class MessageMongoRepositoryIntegrationTest {
     
     @Test
     public void saveFindAllAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
-        
-		String responseJson = "{\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+    	 
+		String responseJson1 = "{\"id\": 1, \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson2 = "{\"id\": 2, \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         
-        MessageEntityMongo message1 = objectMapper.readValue(responseJson,  MessageEntityMongo.class);
+        MessageEntityMongo message1 = objectMapper.readValue(responseJson1,  MessageEntityMongo.class);
         message1 = messageRepository.save(message1);
-        MessageEntityMongo message2 = objectMapper.readValue(responseJson,  MessageEntityMongo.class);
+        MessageEntityMongo message2 = objectMapper.readValue(responseJson2,  MessageEntityMongo.class);
         message2 = messageRepository.save(message2);
         
         List<MessageEntityMongo> retrievedMessageList = messageRepository.findAll();

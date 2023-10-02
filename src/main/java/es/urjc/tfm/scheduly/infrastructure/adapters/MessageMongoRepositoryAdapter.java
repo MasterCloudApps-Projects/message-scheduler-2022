@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import es.urjc.tfm.scheduly.MongoIdGenerator;
 import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.domain.ports.MessageRepository;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntityMongo;
@@ -42,7 +43,7 @@ public class MessageMongoRepositoryAdapter implements MessageRepository{
 
 	@Override
 	public FullMessageDto save(FullMessageDto fullMessageDto) {
-		if(fullMessageDto.getId() == null){fullMessageDto.setId(System.currentTimeMillis());}
+		if(fullMessageDto.getId() == null){fullMessageDto.setId(MongoIdGenerator.generateUniqueId());}
 		return mapper.map(
 				this.messageMongoRepository.save(mapper.map(fullMessageDto,MessageEntityMongo.class)),
 				FullMessageDto.class);
