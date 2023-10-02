@@ -111,7 +111,7 @@ public class MessageRestControllerUnitaryTest {
     @DisplayName("schedule a message")
     public void scheduleMessageTest() throws Exception {
         String messageRequestDtoContent = "{\"messageBody\":\"Random message body\","
-        		+ "\"year\": 2023,"
+        		+ "\"year\": 2099,"
         		+ "\"month\": 9,"
         		+ "\"day\": 24,"
         		+ "\"hour\": 17,"
@@ -130,4 +130,19 @@ public class MessageRestControllerUnitaryTest {
                .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
     }
     
+    @Test
+    @DisplayName("scheduled a message")
+    public void scheduledMessageTest() throws Exception {
+        Long messageId = 1L;
+        ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+        MessageResponseDto messageResponseDto = new MessageResponseDto(messageId, "Random message body", executionTime, serverExecutionTime, true);
+
+        when(messageService.getMessage(messageId)).thenReturn(messageResponseDto);
+
+        mockMvc.perform(get("/api/message/" + messageId))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()))
+               .andExpect(jsonPath("$.messageDispatched").value(messageResponseDto.isMessageDispatched()));
+    }
 }
