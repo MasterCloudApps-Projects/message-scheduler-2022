@@ -1,5 +1,11 @@
 <html>
 <body>
-	<h1>Nothing to show yet</h1>
+	<h1>Scheduly</h1>
+	<h2>Messages already scheduled</h2>
+	{{#messages}}
+		{{^messages}}
+		<p>No messages scheduled yet.</p>
+		{{/messages}}
+	{{/messages}}
 </body>
 </html>
