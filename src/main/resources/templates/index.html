@@ -3,6 +3,7 @@
 	<h1>Scheduly</h1>
 	<h2>Messages already scheduled</h2>
 	{{#messages}}
+	<a href="message/{{id}}">{{messageBody}}, {{executionTime}}</a><br>
 		{{^messages}}
 		<p>No messages scheduled yet.</p>
 		{{/messages}}
