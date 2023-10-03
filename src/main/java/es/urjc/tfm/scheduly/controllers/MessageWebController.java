@@ -19,7 +19,7 @@ public class MessageWebController {
 		this.messageService = messageService;
 	}
 
-	@GetMapping("home")
+	@GetMapping("/")
 	public String showMessages(Model model) {
 		model.addAttribute("messages", messageService.getAllMessages());
 		return "index";

@@ -52,7 +52,7 @@ public class MessageWebControllerUnitaryTest {
         
         when(messageService.getAllMessages()).thenReturn(MessageResponseDtoList);
 
-        mockMvc.perform(get("/home"))
+        mockMvc.perform(get("/"))
                .andExpect(status().isOk())
                .andExpect(view().name("index"))
                .andExpect(model().attribute("messages",MessageResponseDtoList));
