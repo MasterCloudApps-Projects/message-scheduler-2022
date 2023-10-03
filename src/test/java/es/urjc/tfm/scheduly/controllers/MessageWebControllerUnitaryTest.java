@@ -1,5 +1,6 @@
 package es.urjc.tfm.scheduly.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,4 +59,22 @@ public class MessageWebControllerUnitaryTest {
                .andExpect(model().attribute("messages",MessageResponseDtoList));
     }
     
+    @Test
+    @DisplayName("return the message if exists")
+    public void getMessageTest() throws Exception {
+        
+        List<MessageResponseDto> MessageResponseDtoList = new ArrayList<>();
+        Long messageId1 = 1L;
+        ZonedDateTime executionTime1 =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
+        LocalDateTime serverExecutionTime1 = executionTime1.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+        MessageResponseDto messageResponseDto1 = new MessageResponseDto(messageId1,"Random message body number 1", executionTime1, serverExecutionTime1, true);
+        MessageResponseDtoList.add(messageResponseDto1);
+        
+        when(messageService.getMessage(any(Long.class))).thenReturn(messageResponseDto1);
+
+        mockMvc.perform(get("/message/"+ messageResponseDto1.getId()))
+               .andExpect(status().isOk())
+               .andExpect(view().name("show_message"))
+               .andExpect(model().attribute("message",messageResponseDto1));
+    }
 }

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import es.urjc.tfm.scheduly.dtos.MessageResponseDto;
 import es.urjc.tfm.scheduly.services.MessageService;
 
 @Controller
@@ -25,4 +27,10 @@ public class MessageWebController {
 		return "index";
 	}
 	
+	@GetMapping("message/{id}")
+	public String showMessage(Model model, @PathVariable Long id) {
+		MessageResponseDto messageResponseDto = this.messageService.getMessage(id);
+		model.addAttribute("message", messageResponseDto);
+		return "show_message";
+	}
 }
