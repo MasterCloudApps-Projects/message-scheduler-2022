@@ -27,6 +27,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
+import es.urjc.tfm.scheduly.infrastructure.models.IdEntity;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntityMongo;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -37,6 +38,9 @@ public class MessageMongoRepositoryIntegrationTest {
     @Autowired
     private MessageMongoRepository messageRepository;
 
+    @Autowired
+    private UniqueIdRepository uniqueIdRepository;
+    
     @Container
     private static final MongoDBContainer mongoContainer = new MongoDBContainer("mongo:4.4.6").withExposedPorts(27017);
 
@@ -64,10 +68,23 @@ public class MessageMongoRepositoryIntegrationTest {
         mongoContainer.stop();
     }
 
+    private Long generateId() {
+		List<IdEntity> idList = uniqueIdRepository.findAll();
+		Long newId = 1L;
+		IdEntity idEntity;
+		if(!idList.isEmpty()) {
+			idEntity = idList.get(0);
+			newId = idEntity.getUniqueId()+1;
+		}else idEntity = new IdEntity();
+		idEntity.setUniqueId(newId);
+		uniqueIdRepository.save(idEntity);
+		return newId;
+	}
+    
     @Test
     public void saveAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"id\": 1,\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson = "{\"id\":"+ generateId() + ",\"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -84,7 +101,7 @@ public class MessageMongoRepositoryIntegrationTest {
     @Test
     public void saveFindByIdAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
         
-		String responseJson = "{\"id\": 1, \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson = "{\"id\":"+ generateId() + ", \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -103,8 +120,8 @@ public class MessageMongoRepositoryIntegrationTest {
     @Test
     public void saveFindAllAndDeleteMessageTest() throws JsonMappingException, JsonProcessingException {
     	 
-		String responseJson1 = "{\"id\": 1, \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
-		String responseJson2 = "{\"id\": 2, \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson1 = "{\"id\":"+ generateId() + ", \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
+		String responseJson2 = "{\"id\":"+ generateId() + ", \"messageBody\": \"some random text\",\"executionTime\": \"9999-09-09T09:09:00+02:00\",\"serverExecutionTime\": \"2023-09-21T19:21:00\",\"messageDispatched\": false}";
         
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

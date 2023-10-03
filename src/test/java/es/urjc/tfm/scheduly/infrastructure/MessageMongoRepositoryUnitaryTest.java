@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import es.urjc.tfm.scheduly.domain.ports.FullMessageDto;
 import es.urjc.tfm.scheduly.infrastructure.adapters.MessageMongoRepositoryAdapter;
+import es.urjc.tfm.scheduly.infrastructure.models.IdEntity;
 import es.urjc.tfm.scheduly.infrastructure.models.MessageEntityMongo;
 
 import java.time.LocalDateTime;
@@ -28,13 +30,16 @@ public class MessageMongoRepositoryUnitaryTest {
 
     @Mock
     private MessageMongoRepository messageMongoRepository;
+    @Mock
+    private UniqueIdRepository uniqueIdRepository;
 
+    
     private MessageMongoRepositoryAdapter messageMongoRepositoryAdapter;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this); 
-        messageMongoRepositoryAdapter = new MessageMongoRepositoryAdapter(messageMongoRepository);
+        messageMongoRepositoryAdapter = new MessageMongoRepositoryAdapter(messageMongoRepository, uniqueIdRepository);
     }
 
     @Test
@@ -86,8 +91,11 @@ public class MessageMongoRepositoryUnitaryTest {
     	ZonedDateTime executionTime = ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
     	LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
 		
+    	List<IdEntity> idList = new ArrayList();
+    	
     	MessageEntityMongo messageToSave = new MessageEntityMongo(1L,"Random message body",executionTime,serverExecutionTime, false);
         when(messageMongoRepository.save(any(MessageEntityMongo.class))).thenReturn(messageToSave);
+        when(uniqueIdRepository.findAll()).thenReturn(idList);
 
         FullMessageDto result = messageMongoRepositoryAdapter.save(messageToSaveDto);
         assertEquals(messageToSave.getId(), result.getId());
