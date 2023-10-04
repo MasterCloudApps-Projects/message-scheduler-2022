@@ -18,7 +18,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -102,27 +101,4 @@ public class MessageWebControllerUnitaryTest {
         .andExpect(status().isOk())
         .andExpect(view().name("scheduled_message"));
     }
-    /*
-    @Test
-    @DisplayName("schedule a message")
-    public void scheduleMessageTest() throws Exception {
-        String messageRequestDtoContent = "{\"messageBody\":\"Random message body\","
-        		+ "\"year\": 2099,"
-        		+ "\"month\": 9,"
-        		+ "\"day\": 24,"
-        		+ "\"hour\": 17,"
-        		+ "\"minute\": 46}";
-        ZonedDateTime executionTime =ZonedDateTime.of(2099, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
-        LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-		
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime, false);
-        
-        when(messageService.scheduleMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
-
-        mockMvc.perform(post("/api/message/schedule")
-               .contentType(MediaType.APPLICATION_JSON)
-               .content(messageRequestDtoContent))
-               .andExpect(status().isCreated())
-               .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
-    }*/
 }
