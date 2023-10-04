@@ -6,13 +6,13 @@
 <body>
 	<form action="message/schedule" method="post">
 		<p>Body of the message:</p>
-		<textarea name='messageBody' rows=5 cols=40 required></textarea>
+		<textarea id="messageBody" name='messageBody' rows=5 cols=40 required></textarea>
 		<p>Schedule the message dispatch:</p>
-		<p>Day: <input type='number' min="1" max="31" name='day' required/></p>
-		<p>month: <input type='number' min="1" max="12"name='month' required/></p>
-		<p>year: <input type='number'  name='year' required/></p>
-		<p>Hour: <input type='number' min="0" max="23" name='hour' required/></p>
-		<p>Minute: <input type='number' min="0" max="60" name='minute' required/></p>
+		<p>Day: <input id="day" type='number' min="1" max="31" name='day' required/></p>
+		<p>Month: <input id="month" type='number' min="1" max="12"name='month' required/></p>
+		<p>Year: <input id="year" type='number'  name='year' required/></p>
+		<p>Hour: <input id="hour" type='number' min="0" max="23" name='hour' required/></p>
+		<p>Minute: <input id="minute" type='number' min="0" max="60" name='minute' required/></p>
 
 		<input id="schedule" type='submit' value='Save'/>
         <a id="back" class="button" href="/">Back</a>
