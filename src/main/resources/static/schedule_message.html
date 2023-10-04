@@ -1,0 +1,19 @@
+<html>
+<head>
+	<meta charset="UTF-8"/>
+</head>
+<body>
+	<form action="message/new" method="post">
+		<p>Body of the message:</p>
+		<textarea name='messageBody' rows=5 cols=40 required></textarea>
+		<p>Schedule the message dispatch:</p>
+		<p>Day: <input type='number' min="1" max="31" name='day' required/></p>
+		<p>month: <input type='number' min="1" max="12"name='month' required/></p>
+		<p>year: <input type='number'  name='year' required/></p>
+		<p>Hour: <input type='number' min="0" max="23" name='hour' required/></p>
+		<p>Minute: <input type='number' min="0" max="60" name='minute' required/></p>
+
+		<input type='submit' value='Save'/>
+	</form>
+</body>
+</html>
