@@ -9,12 +9,12 @@
 		<div class="message-info">
 			<h2>Messages scheduled or dispatched</h2>
 			{{#messages}}
-			<div id="elem{{id}}">
+			<div id="elem{{id}}" class="message-elem">
 				<a href="message/{{id}}" class="message-access">{{messageBody}}, {{executionTime}}</a>
 			</div>
 			{{/messages}}
 			{{^messages}}
-				<div>
+				<div class="message-elem">
 					<p class="no-elements">No messages scheduled yet.</p>
 				</div>
 			{{/messages}}

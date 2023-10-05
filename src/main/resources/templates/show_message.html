@@ -6,14 +6,15 @@
 	<body>
 		<div class="container">
 			<h1>Scheduly</h1>
-			<p>Message information</p>
-			<p>Body: {{message.messageBody}}</p>
-			<p>Time scheduled: {{message.executionTime}}</p>
-			<p>Server time scheduled: {{message.serverExecutionTime}}</p>
-			<p>Message dispatched: {{message.messageDispatched}}
-			<br>
-		
-		<a id="back" class="button" href="/">Back</a>
-
+			<div class="message-info">
+				<h2>Message information</h2>
+				<label>Body: <p id="messageBody" class="message-elem">{{message.messageBody}}</p></label>
+				<label>Time scheduled: <p id="scheduledDate" class="message-elem">{{message.executionTime}}</p></label>
+				<label>Server time scheduled: <p id="serverDate" class="message-elem">{{message.serverExecutionTime}}</p></label>
+				<label>Message dispatched: <p id="messageDispatched" class="message-elem">{{message.messageDispatched}}</p></label>
+				<a id="back" class="button" href="/">Back</a>
+			</div>
+			
+		</div>
 	</body>
 </html>

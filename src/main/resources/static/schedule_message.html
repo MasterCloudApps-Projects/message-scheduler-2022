@@ -1,21 +1,26 @@
 <html>
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/styles.css">
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-	<form action="message/schedule" method="post">
-		<p>Body of the message:</p>
-		<textarea id="messageBody" name='messageBody' rows=5 cols=40 required></textarea>
-		<p>Schedule the message dispatch:</p>
-		<p>Day: <input id="day" type='number' min="1" max="31" name='day' required/></p>
-		<p>Month: <input id="month" type='number' min="1" max="12"name='month' required/></p>
-		<p>Year: <input id="year" type='number'  name='year' required/></p>
-		<p>Hour: <input id="hour" type='number' min="0" max="23" name='hour' required/></p>
-		<p>Minute: <input id="minute" type='number' min="0" max="60" name='minute' required/></p>
+	<div class="container">
+		<h1>Scheduly</h1>
+		<form action="message/schedule" method="post">
+			<h2>Schedule a new message:</h2>
+			<h3>Body of the message:</h3>
+			<textarea id="messageBody" name='messageBody' rows=5 cols=40 required></textarea>
+			<h3>Schedule dispatch date:</h3>
+			<label>Day: <input id="day" type='number' min="1" max="31" name='day' required/></label>
+			<label>Month: <input id="month" type='number' min="1" max="12"name='month' required/></label>
+			<label>Year: <input id="year" type='number'  name='year' required/></label>
+			<label>Hour: <input id="hour" type='number' min="0" max="23" name='hour' required/></label>
+			<label>Minute: <input id="minute" type='number' min="0" max="59" name='minute' required/></label>
 
-		<input id="schedule" type='submit' value='Save'/>
-        <a id="back" class="button" href="/">Back</a>
-	</form>
+			<input id="schedule" class="button" type='submit' value='Save'/>
+			<a id="back" class="button" href="/">Back</a>
+        
+		</form>
+	</div>
 </body>
 </html>

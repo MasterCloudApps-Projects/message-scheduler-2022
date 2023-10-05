@@ -1,3 +1,4 @@
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,6 +12,9 @@ body {
     padding: 20px;
 }
 
+label{
+    margin-bottom: 10px;
+}
 h1 {
     color: #333;
     font-size: 36px;
@@ -24,6 +28,12 @@ h2 {
     margin-top: 0px;
 }
 
+h3{
+    margin-top: 0px;
+}
+p {
+    margin-bottom: 10px;
+}
 
 form {
     background-color: #fff;
@@ -52,7 +62,6 @@ form {
     font-size: 16px;
     margin-top: 10px;
 }
-
 
 .schedule-button {
     display: inline-block;
@@ -83,6 +92,55 @@ form {
 
 .button:hover {
     background-color: #555;
+}
+
+textarea,
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+input:required:invalid,
+textarea:required:invalid {
+    border-color: #ff6b6b;
+}
+
+input:required:valid,
+textarea:required:valid {
+    border-color: #6bff6b;
+}
+
+span.error-message {
+    color: #ff6b6b;
+    font-size: 14px;
+}
+
+.message-info{
+    background-color: #fff;
+    max-width: 400px;
+    margin: 20px auto;
+    position: absolute;
+    padding: 20px;
+    border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .message-elem {

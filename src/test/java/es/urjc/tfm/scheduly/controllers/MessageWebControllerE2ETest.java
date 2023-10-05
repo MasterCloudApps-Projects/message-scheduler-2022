@@ -76,13 +76,9 @@ public class MessageWebControllerE2ETest {
         
 		lastElem.click();
 		// show message view
-		WebElement messageTextArea = findElementWithText("Body: selenium test text");
-    	assertEquals(lastElemText, messageTextArea.getText().split(": ")[1]);
+		WebElement messageBodyCreatedMessage = driver.findElement(By.id("messageBody"));
+    	assertEquals(lastElemText, messageBodyCreatedMessage.getText());
     	
-	}
-	
-	private WebElement findElementWithText(String text) {
-        return driver.findElement(By.xpath(format("//*[text()='%s']", text)));
 	}
 	
 }
