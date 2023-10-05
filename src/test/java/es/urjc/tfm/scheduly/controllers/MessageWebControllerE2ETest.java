@@ -35,11 +35,11 @@ public class MessageWebControllerE2ETest {
 	    @BeforeEach
 	    void setup() {
 	        ChromeOptions options = new ChromeOptions();
-		options.addArguments("--no-sandbox");
-		options.addArguments("--disable-dev-shm-usage");
-		options.addArguments("--headless");
-		options.addArguments("--remote-allow-origins=*");
-		driver = new ChromeDriver(options);
+			options.addArguments("--no-sandbox");
+			options.addArguments("--disable-dev-shm-usage");
+			options.addArguments("--headless");
+			options.addArguments("--remote-allow-origins=*");
+			driver = new ChromeDriver(options);
 	    }
 
 	    @AfterEach

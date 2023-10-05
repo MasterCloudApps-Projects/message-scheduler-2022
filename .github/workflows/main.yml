@@ -157,22 +157,19 @@ jobs:
     needs: [test-rest-e2e]
     steps:
     - name: Clone repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up JDK 17
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
-        distribution: 'adopt'
         java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Setup Chrome
+      uses: browser-actions/setup-chrome@latest
+    - name: Chrome version
+      run: chrome --version
     - name: Replace Slack OAuth Token
       run: |
           sed -i "s/slack.oauth.token=.*/slack.oauth.token=${{ secrets.SLACK_TOKEN }}/" src/main/resources/application.properties
-    - name: Run mvn v
-      run: mvn -v 
-    - name: Run java v
-      run: java -version
-    - name: Install Google Chrome 
-      run: |
-            chmod +x ./scripts/installFirefox.sh
-             ./scripts/installFirefox.sh 
-    - name: Run Rest E2E test
+    - name: Build with Maven
       run: mvn -B -Dtest=*WebControllerE2ETest test
