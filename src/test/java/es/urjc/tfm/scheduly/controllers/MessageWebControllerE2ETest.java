@@ -67,7 +67,7 @@ public class MessageWebControllerE2ETest {
         driver.findElement(By.id("back")).click();
         WebElement div = driver.findElement(By.className("message-info"));
         java.util.List<WebElement> elements = div.findElements(By.tagName("a"));
-        WebElement lastElem = elements.get(elements.size() - 1);
+        WebElement lastElem = elements.get(elements.size() - 2);
         String lastElemText = lastElem.getText().split(",")[0];
         
 		// verifies if the message has been scheduled
