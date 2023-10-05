@@ -2,6 +2,7 @@ package es.urjc.tfm.scheduly.controllers;
 
 import es.urjc.tfm.scheduly.SchedulyApplication;
 
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
@@ -66,7 +67,7 @@ public class MessageWebControllerE2ETest {
         // scheduled message view
         driver.findElement(By.id("back")).click();
         WebElement div = driver.findElement(By.className("message-info"));
-        java.util.List<WebElement> elements = div.findElements(By.tagName("a"));
+        java.util.List<WebElement> elements = div.findElements(By.tagName("div"));
         WebElement lastElem = elements.get(elements.size() - 2);
         String lastElemText = lastElem.getText().split(",")[0];
         
@@ -75,8 +76,13 @@ public class MessageWebControllerE2ETest {
         
 		lastElem.click();
 		// show message view
-		WebElement messageTextArea = driver.findElement(By.id("messageBody"));
-    	assertEquals(lastElemText, messageTextArea.getText());
+		WebElement messageTextArea = findElementWithText("Body: selenium test text");
+    	assertEquals(lastElemText, messageTextArea.getText().split(": ")[1]);
     	
 	}
+	
+	private WebElement findElementWithText(String text) {
+        return driver.findElement(By.xpath(format("//*[text()='%s']", text)));
+	}
+	
 }
