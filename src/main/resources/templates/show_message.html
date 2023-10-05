@@ -1,13 +1,19 @@
 <html>
-<body>
-	<p>Message information</p>
-	<p>Body: {{message.messageBody}}</p>
-	<p>Time scheduled: {{message.executionTime}}</p>
-	<p>Server time scheduled: {{message.serverExecutionTime}}</p>
-	<p>Message dispatched: {{message.messageDispatched}}
-	<br>
-	
-	<a href="/">Back</a>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="/styles.css">
+	</head>
+	<body>
+		<div class="container">
+			<h1>Scheduly</h1>
+			<p>Message information</p>
+			<p>Body: {{message.messageBody}}</p>
+			<p>Time scheduled: {{message.executionTime}}</p>
+			<p>Server time scheduled: {{message.serverExecutionTime}}</p>
+			<p>Message dispatched: {{message.messageDispatched}}
+			<br>
+		
+		<a id="back" class="button" href="/">Back</a>
 
-</body>
+	</body>
 </html>

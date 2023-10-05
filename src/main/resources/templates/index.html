@@ -1,19 +1,25 @@
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="styles.css">
-	</head>
-	<body>
-		<div class="container"></div>
-			<h1>Scheduly</h1>
-			<h2>Messages already scheduled</h2>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Scheduly</h1>
+		<div class="message-info">
+			<h2>Messages scheduled or dispatched</h2>
 			{{#messages}}
-			<a id="elem{{id}}" href="message/{{id}}">{{messageBody}}, {{executionTime}}</a><br>
-				{{^messages}}
-				<p>No messages scheduled yet.</p>
-				{{/messages}}
+			<div id="elem{{id}}">
+				<a href="message/{{id}}" class="message-access">{{messageBody}}, {{executionTime}}</a>
+			</div>
 			{{/messages}}
-			<a id="scheduleButton" href="schedule_message.html">Schedule message</a>
+			{{^messages}}
+				<div>
+					<p class="no-elements">No messages scheduled yet.</p>
+				</div>
+			{{/messages}}
+			<a id="scheduleButton" href="schedule_message.html" class="schedule-button">Schedule message</a>
 		</div>
-	</body>
+	</div>
+</body>
 </html>

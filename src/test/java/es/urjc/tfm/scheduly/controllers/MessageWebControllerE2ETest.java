@@ -48,22 +48,35 @@ public class MessageWebControllerE2ETest {
 	    }
 	
 	@Test
-    public void scheduleMessageAndGetAllMessageTest() {
+    public void scheduleMessageGetMessageTest() {
 		driver.get("https://scheduly-molynx.cloud.okteto.net/");
+		
+		// index view
 		driver.findElement(By.id("scheduleButton")).click();
-        driver.findElement(By.id("messageBody")).sendKeys("texto de prueba nuevas");
+		
+		// schedule message view
+        driver.findElement(By.id("messageBody")).sendKeys("selenium test text");
         driver.findElement(By.id("day")).sendKeys("9");
         driver.findElement(By.id("month")).sendKeys("9");
         driver.findElement(By.id("year")).sendKeys("2099");
         driver.findElement(By.id("hour")).sendKeys("9");
         driver.findElement(By.id("minute")).sendKeys("19");
         driver.findElement(By.id("schedule")).click();
-        driver.findElement(By.id("back")).click();
-        WebElement div = driver.findElement(By.tagName("body"));
-        java.util.List<WebElement> elements = div.findElements(By.tagName("a"));
-        WebElement lastElem = elements.get(elements.size() - 2);
-
-        assertEquals("texto de prueba nuevas", lastElem.getText().split(",")[0]);
         
-    }
+        // scheduled message view
+        driver.findElement(By.id("back")).click();
+        WebElement div = driver.findElement(By.className("message-info"));
+        java.util.List<WebElement> elements = div.findElements(By.tagName("a"));
+        WebElement lastElem = elements.get(elements.size() - 1);
+        String lastElemText = lastElem.getText().split(",")[0];
+        
+		// verifies if the message has been scheduled
+        assertEquals("selenium test text", lastElemText);
+        
+		lastElem.click();
+		// show message view
+		WebElement messageTextArea = driver.findElement(By.id("messageBody"));
+    	assertEquals(lastElemText, messageTextArea.getText());
+    	
+	}
 }
