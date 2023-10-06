@@ -45,8 +45,8 @@ public class MessageWebController {
 			@RequestParam int hour, @RequestParam int minute){
 		try {
 			this.messageService.scheduleMessage(new MessageRequestDto(messageBody,year,month,day,hour,minute));
-		} catch (Exception e) { // Future configuration fro OutOfDate and WrongParams exception redirection
-			e.printStackTrace(); 
+		} catch (Exception e) {
+			return "error";
 		}
 		return "scheduled_message";
 	}
