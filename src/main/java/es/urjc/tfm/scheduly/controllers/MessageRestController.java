@@ -41,12 +41,6 @@ public class MessageRestController {
 	public List<MessageResponseDto> getAllMessages() {
 		return this.messageService.getAllMessages();
 	}
-	
-    @PostMapping("/")
-    public ResponseEntity<MessageResponseDto> createMessage(@RequestBody MessageRequestDto message) {
-    	MessageResponseDto createdMessage = messageService.createMessage(message);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdMessage);
-    }
 
 	@DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMessage(@PathVariable Long id) {
@@ -58,5 +52,11 @@ public class MessageRestController {
     public ResponseEntity<MessageResponseDto> scheduleMessage(@RequestBody MessageRequestDto message)throws Exception {
     	MessageResponseDto scheduledMessage = messageService.scheduleMessage(message);
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduledMessage);
+    }
+
+	@DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteItem(@PathVariable Long id) {
+    	this.messageService.deleteMessage(id);
+    	return ResponseEntity.ok("Message deleted properly");
     }
 }

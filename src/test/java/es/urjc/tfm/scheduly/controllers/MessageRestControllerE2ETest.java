@@ -21,8 +21,8 @@ public class MessageRestControllerE2ETest {
 	
 	@Test
 	public void createMessageAndFindByIdTest() {
-        String requestJson = "{\"messageBody\": \"Random message body\","
-        		+ "\"year\": 2023,"
+		String requestJson = "{\"messageBody\": \"Random message body\","
+        		+ "\"year\": 2027,"
         		+ "\"month\": 9,"
         		+ "\"day\": 30,"
         		+ "\"hour\": 20,"
@@ -32,7 +32,7 @@ public class MessageRestControllerE2ETest {
                 .contentType(ContentType.JSON)
                 .body(requestJson)
                 .when()
-                .post("/api/message/")
+                .post("/api/message/schedule")
                 .then()
                 .contentType(ContentType.JSON)
                 .body("messageBody", equalTo("Random message body"))
@@ -68,7 +68,7 @@ public class MessageRestControllerE2ETest {
                 .contentType(ContentType.JSON)
                 .body(requestJson1)
                 .when()
-                .post("/api/message/")
+                .post("/api/message/schedule")
                 .then()
                 .contentType(ContentType.JSON)
                 .body("messageBody", equalTo("Random message body 1"))

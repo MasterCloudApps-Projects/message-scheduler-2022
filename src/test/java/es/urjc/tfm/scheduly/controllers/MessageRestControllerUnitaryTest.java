@@ -81,23 +81,6 @@ public class MessageRestControllerUnitaryTest {
     }
     
     @Test
-    @DisplayName("create a message and verify its existence")
-    public void createMessageTest() throws Exception {
-        String messageRequestDtoContent = "{\"messageBody\": \"Random message body\"}";
-        ZonedDateTime executionTime =ZonedDateTime.of(2023, 9, 24, 17, 46, 0, 0, ZoneId.of("Europe/Madrid"));
-        LocalDateTime serverExecutionTime = executionTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
-        MessageResponseDto messageResponseDto = new MessageResponseDto(1L, "Random message body", executionTime, serverExecutionTime, true);
-
-        when(messageService.createMessage(any(MessageRequestDto.class))).thenReturn(messageResponseDto);
-
-        mockMvc.perform(post("/api/message/")
-               .contentType(MediaType.APPLICATION_JSON)
-               .content(messageRequestDtoContent))
-               .andExpect(status().isCreated())
-               .andExpect(jsonPath("$.messageBody").value(messageResponseDto.getMessageBody()));
-    }
-    
-    @Test
     @DisplayName("deletes a message")
     public void deleteMessageTest() throws Exception {
         Long messageId = 1L;
