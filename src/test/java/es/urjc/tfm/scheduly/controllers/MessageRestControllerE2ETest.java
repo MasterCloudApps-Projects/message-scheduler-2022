@@ -84,7 +84,7 @@ public class MessageRestControllerE2ETest {
                 .contentType(ContentType.JSON)
                 .body(requestJson2)
                 .when()
-                .post("/api/message/")
+                .post("/api/message/schedule")
                 .then()
                 .contentType(ContentType.JSON)
                 .body("messageBody", equalTo("Random message body 2"))
