@@ -1,9 +1,6 @@
 package es.urjc.tfm.scheduly.controllers;
 
 import es.urjc.tfm.scheduly.SchedulyApplication;
-import es.urjc.tfm.scheduly.services.MessageService;
-
-import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,12 +13,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.TestPropertySource;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+@TestPropertySource(properties = "listener.enabled=false")
 @SpringBootTest(classes = SchedulyApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MessageWebControllerE2ETest {
 
