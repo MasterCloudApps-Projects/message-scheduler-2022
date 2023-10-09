@@ -19,4 +19,5 @@ public interface MessageService {
 
 	public MessageResponseDto scheduleMessage(MessageRequestDto messageRequestDto) throws WrongParamsException, OutOfDateException;
 	 
+	public void reScheduleAtStart();
 }

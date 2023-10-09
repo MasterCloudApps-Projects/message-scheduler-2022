@@ -80,27 +80,18 @@ public class MessageServiceImpl implements MessageService{
 		MessageResponseDto messageResponseDto = mapper.map(
 				messageUseCase.createMessage(fullMessageDto),
 				MessageResponseDto.class);
-		Runnable task = () -> {
-				try {
-					this.comunicationUseCase.sendMessage(messageResponseDto.getMessageBody());
-					this.messageUseCase.updateMessageDispatched(messageResponseDto.getId());
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (SlackApiException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			};
-			
-		    long initialWait = fullMessageDto.getServerExecutionTime().toInstant(ZoneOffset.UTC).toEpochMilli() - System.currentTimeMillis();
-		    if (initialWait >= 0) {
-				executorService.schedule(task, initialWait, TimeUnit.MILLISECONDS);
-			}
+		scheduleTask(messageResponseDto);
 
 		return messageResponseDto;
 	}
 
+	public void reScheduleAtStart() {
+		List<MessageResponseDto> messageResponseDtoList = this.getAllMessages();
+		for (MessageResponseDto messageResponseDto : messageResponseDtoList) {
+			scheduleTask(messageResponseDto);
+		}
+	}
+	
 	private ZonedDateTime calculeExecutionDate(MessageRequestDto messageRequestDto) {
 		return ZonedDateTime.of(
 				messageRequestDto.getYear(), 
@@ -134,4 +125,25 @@ public class MessageServiceImpl implements MessageService{
 	    }	
 		return new FullMessageDto(messageRequestDto.getMessageBody(), executionTimeDate, serverExecutionTime);
 	}
+
+	private void scheduleTask(MessageResponseDto messageResponseDto) {
+		Runnable task = () -> {
+			try {
+				this.comunicationUseCase.sendMessage(messageResponseDto.getMessageBody());
+				this.messageUseCase.updateMessageDispatched(messageResponseDto.getId());
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (SlackApiException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		};
+		
+		long initialWait = messageResponseDto.getServerExecutionTime().toInstant(ZoneOffset.UTC).toEpochMilli() - System.currentTimeMillis();
+		if (initialWait >= 0) {
+			executorService.schedule(task, initialWait, TimeUnit.MILLISECONDS);
+		}
+	}
+	
 }
