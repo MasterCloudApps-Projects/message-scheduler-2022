@@ -88,7 +88,8 @@ public class MessageServiceImpl implements MessageService{
 	public void reScheduleAtStart() {
 		List<MessageResponseDto> messageResponseDtoList = this.getAllMessages();
 		for (MessageResponseDto messageResponseDto : messageResponseDtoList) {
-			scheduleTask(messageResponseDto);
+			if(!messageResponseDto.isMessageDispatched())
+				scheduleTask(messageResponseDto);
 		}
 	}
 	
