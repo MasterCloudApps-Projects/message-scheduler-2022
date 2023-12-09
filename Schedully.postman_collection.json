@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "1483b7e5-7a5d-435c-bc6e-ebfeaeec2e97",
+		"name": "Schedully",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "getAllMessage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/message/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"message",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMessage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/message/19",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"message",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "scheduleMessage",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Date",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"messageBody\":\"Hola buenas noches!\",\r\n    \"year\": 2058,\r\n    \"month\": 9,\r\n    \"day\": 21,\r\n    \"hour\": 21,\r\n    \"minute\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/message/schedule",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"message",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMessage",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/message/delete/20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"message",
+								"delete",
+								"20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://scheduly-molynx.cloud.okteto.net",
+			"type": "default"
+		}
+	]
+}
